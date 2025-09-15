@@ -614,6 +614,7 @@
             <button class="nav-btn active" id="dashboard-nav">📊 Dashboard</button>
             <button class="nav-btn" id="users-nav">👥 Usuarios</button>
             <button class="nav-btn" id="analytics-nav">📈 Analytics</button>
+            <button class="nav-btn" id="fieldbeat-nav">🌐 Fieldbeat</button>
             <button class="nav-btn" id="logout-nav">🚪 Salir</button>
         </div>
     </header>
@@ -649,7 +650,8 @@
                     
                     <div class="mt-2 text-center">
                         <small style="color: var(--text-light);">
-                            Usuario: <strong>admin</strong> | Contraseña: <strong>admin123</strong>
+                            <strong>Admin:</strong> admin / admin123<br>
+                            <strong>Reclutamiento:</strong> reclutamientogn / gruponorte1234
                         </small>
                     </div>
                 </div>
@@ -668,12 +670,88 @@
                         <div class="stat-label">👥 Usuarios Totales</div>
                     </div>
                     <div class="stat-card" style="background: linear-gradient(135deg, var(--primary-green), var(--light-green));">
-                        <div class="stat-number" id="forms-created">15</div>
+                        <div class="stat-number" id="forms-created">0</div>
                         <div class="stat-label">📝 Formularios Creados</div>
                     </div>
                     <div class="stat-card" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
                         <div class="stat-number" id="active-sessions">3</div>
                         <div class="stat-label">🔥 Sesiones Activas</div>
+                    </div>
+                </div>
+
+                <!-- Create Form Section -->
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <h3 class="section-title">📝 Crear Nuevo Formulario</h3>
+                        
+                        <div id="form-alerts"></div>
+                        
+                        <div class="form-group">
+                            <label for="form-name" class="form-label">Nombre del Formulario</label>
+                            <input type="text" id="form-name" class="form-input" 
+                                   placeholder="Ej: Registro de Empleados" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="form-schedule" class="form-label">Horario</label>
+                            <input type="text" id="form-schedule" class="form-input" 
+                                   placeholder="Ej: 8:00 AM - 5:00 PM" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="form-branch" class="form-label">Sucursal</label>
+                            <select id="form-branch" class="form-input" required>
+                                <option value="">Seleccionar sucursal...</option>
+                                <option value="central">Central</option>
+                                <option value="norte">Norte</option>
+                                <option value="sur">Sur</option>
+                                <option value="este">Este</option>
+                                <option value="oeste">Oeste</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="form-receiver" class="form-label">Nombre de quien recibe</label>
+                            <input type="text" id="form-receiver" class="form-input" 
+                                   placeholder="Ej: Ana García" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="form-description" class="form-label">Descripción</label>
+                            <textarea id="form-description" class="form-input" rows="3" 
+                                      placeholder="Descripción del formulario..."></textarea>
+                        </div>
+                        
+                        <button id="create-form-btn" class="btn btn-success btn-full-width">
+                            📝 Crear Formulario
+                        </button>
+                    </div>
+
+                    <div>
+                        <h3 class="section-title">📋 Formularios Recientes</h3>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Sucursal</th>
+                                        <th>Receptor</th>
+                                        <th>Fecha</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="forms-table-body">
+                                    <!-- Forms will be populated here -->
+                                </tbody>
+                            </table>
+                            
+                            <div id="forms-empty-state" class="empty-state">
+                                <div class="empty-icon">📝</div>
+                                <p>No hay formularios creados</p>
+                                <small>Crea tu primer formulario usando el panel lateral</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -853,6 +931,7 @@
     <script>
         // Application State
         let users = JSON.parse(localStorage.getItem('gn_users') || '[]');
+        let forms = JSON.parse(localStorage.getItem('gn_forms') || '[]');
         let currentUser = null;
         let isLoggedIn = false;
         let currentSection = 'dashboard';
@@ -861,6 +940,13 @@
         const ADMIN_CREDENTIALS = {
             username: 'admin',
             password: 'admin123'
+        };
+
+        // Special user for recruitment redirection
+        const RECRUITMENT_CREDENTIALS = {
+            username: 'reclutamientogn',
+            password: 'gruponorte1234',
+            redirectUrl: 'https://analistagn.github.io/reclutamiento-gn/'
         };
 
         // DOM Elements
@@ -875,11 +961,13 @@
         const dashboardNav = document.getElementById('dashboard-nav');
         const usersNav = document.getElementById('users-nav');
         const analyticsNav = document.getElementById('analytics-nav');
+        const fieldbeatNav = document.getElementById('fieldbeat-nav');
         const logoutNav = document.getElementById('logout-nav');
 
         // Form Elements
         const loginBtn = document.getElementById('login-btn');
         const createUserBtn = document.getElementById('create-user-btn');
+        const createFormBtn = document.getElementById('create-form-btn');
         const exportBtn = document.getElementById('export-btn');
 
         // Initialize Application
@@ -889,6 +977,7 @@
             loadSampleData();
             updateStats();
             renderUsersTable();
+            renderFormsTable();
             createActivityChart();
         });
 
@@ -924,7 +1013,13 @@
             dashboardNav.addEventListener('click', () => showSection('dashboard'));
             usersNav.addEventListener('click', () => showSection('users'));
             analyticsNav.addEventListener('click', () => showSection('analytics'));
+            fieldbeatNav.addEventListener('click', () => {
+                window.open('https://teams.fieldbeat.com/web/#/login', '_blank');
+            });
             logoutNav.addEventListener('click', handleLogout);
+
+            // Form Management
+            createFormBtn.addEventListener('click', handleCreateForm);
 
             // User Management
             createUserBtn.addEventListener('click', handleCreateUser);
@@ -954,6 +1049,25 @@
 
             // Simulate API call delay
             setTimeout(() => {
+                // Check for recruitment user first
+                if (username === RECRUITMENT_CREDENTIALS.username && password === RECRUITMENT_CREDENTIALS.password) {
+                    // Log recruitment login
+                    if (window.analytics) {
+                        window.logEvent(window.analytics, 'recruitment_login', {
+                            username: username,
+                            redirect_url: RECRUITMENT_CREDENTIALS.redirectUrl
+                        });
+                    }
+                    
+                    showAlert('login-alerts', 'Acceso de reclutamiento. Redirigiendo...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = RECRUITMENT_CREDENTIALS.redirectUrl;
+                    }, 1500);
+                    return;
+                }
+                
+                // Check for admin credentials
                 if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
                     currentUser = { username, role: 'admin', loginTime: new Date().toISOString() };
                     isLoggedIn = true;
@@ -977,7 +1091,7 @@
                         clearLoginForm();
                     }, 1500);
                 } else {
-                    showAlert('login-alerts', 'Credenciales incorrectas. Intenta con admin/admin123', 'error');
+                    showAlert('login-alerts', 'Credenciales incorrectas. Verifica usuario y contraseña', 'error');
                     resetLoginButton();
                     
                     // Log failed login
@@ -1068,6 +1182,61 @@
                 // Reset button
                 createUserBtn.innerHTML = '➕ Crear Usuario';
                 createUserBtn.disabled = false;
+            }, 1000);
+        }
+
+        function handleCreateForm() {
+            const formName = document.getElementById('form-name').value.trim();
+            const formSchedule = document.getElementById('form-schedule').value.trim();
+            const formBranch = document.getElementById('form-branch').value;
+            const formReceiver = document.getElementById('form-receiver').value.trim();
+            const formDescription = document.getElementById('form-description').value.trim();
+            
+            // Validation
+            if (!formName || !formSchedule || !formBranch || !formReceiver) {
+                showAlert('form-alerts', 'Por favor completa todos los campos obligatorios', 'error');
+                return;
+            }
+
+            // Show loading state
+            createFormBtn.innerHTML = '<span class="spinner"></span>Creando...';
+            createFormBtn.disabled = true;
+
+            setTimeout(() => {
+                // Create form
+                const newForm = {
+                    id: generateId(),
+                    name: formName,
+                    schedule: formSchedule,
+                    branch: formBranch,
+                    receiver: formReceiver,
+                    description: formDescription,
+                    status: 'Activo',
+                    createdAt: new Date().toISOString(),
+                    createdBy: currentUser.username
+                };
+
+                forms.push(newForm);
+                saveForms();
+                
+                // Log form creation
+                if (window.analytics) {
+                    window.logEvent(window.analytics, 'form_created', {
+                        form_name: formName,
+                        branch: formBranch,
+                        created_by: currentUser.username,
+                        total_forms: forms.length
+                    });
+                }
+                
+                showAlert('form-alerts', `Formulario "${formName}" creado exitosamente`, 'success');
+                clearCreateFormForm();
+                renderFormsTable();
+                updateStats();
+                
+                // Reset button
+                createFormBtn.innerHTML = '📝 Crear Formulario';
+                createFormBtn.disabled = false;
             }, 1000);
         }
 
@@ -1221,15 +1390,12 @@
 
         function updateStats() {
             document.getElementById('total-users-stat').textContent = users.length;
+            document.getElementById('forms-created').textContent = forms.length;
             
             const today = new Date().toDateString();
             const usersToday = users.filter(user => 
                 new Date(user.createdAt).toDateString() === today
             ).length;
-            
-            // Update forms created with random increment for demo
-            const formsCount = parseInt(document.getElementById('forms-created').textContent);
-            document.getElementById('forms-created').textContent = formsCount + Math.floor(Math.random() * 3);
         }
 
         function createActivityChart() {
@@ -1317,6 +1483,35 @@
                 users = sampleUsers;
                 saveUsers();
             }
+
+            if (forms.length === 0) {
+                const sampleForms = [
+                    {
+                        id: generateId(),
+                        name: 'Registro de Empleados',
+                        schedule: '8:00 AM - 5:00 PM',
+                        branch: 'central',
+                        receiver: 'Ana García',
+                        description: 'Formulario para registro de nuevos empleados',
+                        status: 'Activo',
+                        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdBy: 'admin'
+                    },
+                    {
+                        id: generateId(),
+                        name: 'Evaluación de Desempeño',
+                        schedule: '9:00 AM - 6:00 PM',
+                        branch: 'norte',
+                        receiver: 'Carlos López',
+                        description: 'Formulario para evaluaciones mensuales',
+                        status: 'Activo',
+                        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdBy: 'admin'
+                    }
+                ];
+                forms = sampleForms;
+                saveForms();
+            }
         }
 
         function showAlert(containerId, message, type) {
@@ -1354,8 +1549,20 @@
             document.getElementById('confirm-password').value = '';
         }
 
+        function clearCreateFormForm() {
+            document.getElementById('form-name').value = '';
+            document.getElementById('form-schedule').value = '';
+            document.getElementById('form-branch').value = '';
+            document.getElementById('form-receiver').value = '';
+            document.getElementById('form-description').value = '';
+        }
+
         function saveUsers() {
             localStorage.setItem('gn_users', JSON.stringify(users));
+        }
+
+        function saveForms() {
+            localStorage.setItem('gn_forms', JSON.stringify(forms));
         }
 
         function generateId() {
