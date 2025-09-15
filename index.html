@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Integral - Grupo Norte</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #002338;
+            --primary-green: #77c25c;
+            --light-blue: #004b66;
+            --light-green: #a3d47a;
+            --text-dark: #2c3e50;
+            --text-light: #6c757d;
+            --white: #ffffff;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-green) 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--primary-blue), var(--primary-green), var(--light-blue), var(--light-green));
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: floatUp 8s ease-in-out infinite;
+            backdrop-filter: blur(5px);
+        }
+
+        .bubble:nth-child(1) { width: 60px; height: 60px; left: 10%; animation-delay: 0s; animation-duration: 8s; }
+        .bubble:nth-child(2) { width: 80px; height: 80px; left: 25%; animation-delay: 2s; animation-duration: 10s; }
+        .bubble:nth-child(3) { width: 40px; height: 40px; left: 50%; animation-delay: 1s; animation-duration: 7s; }
+        .bubble:nth-child(4) { width: 100px; height: 100px; left: 75%; animation-delay: 3s; animation-duration: 12s; }
+        .bubble:nth-child(5) { width: 70px; height: 70px; left: 85%; animation-delay: 4s; animation-duration: 9s; }
+        .bubble:nth-child(6) { width: 50px; height: 50px; left: 15%; animation-delay: 5s; animation-duration: 11s; }
+        .bubble:nth-child(7) { width: 90px; height: 90px; left: 40%; animation-delay: 1.5s; animation-duration: 8.5s; }
+        .bubble:nth-child(8) { width: 35px; height: 35px; left: 65%; animation-delay: 6s; animation-duration: 7.5s; }
+
+        .bubble:nth-child(2n) {
+            background: radial-gradient(circle at 30% 30%, rgba(119, 194, 92, 0.3), rgba(119, 194, 92, 0.1));
+            border-color: rgba(119, 194, 92, 0.4);
+        }
+
+        .bubble:nth-child(2n+1) {
+            background: radial-gradient(circle at 30% 30%, rgba(0, 35, 56, 0.3), rgba(0, 35, 56, 0.1));
+            border-color: rgba(0, 35, 56, 0.4);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) translateX(0px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(50px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary-green);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            height: 70px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .header-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: var(--transition);
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Login Form */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .login-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header h2 {
+            color: var(--primary-blue);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .login-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(119, 194, 92, 0.2);
+            background: white;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-light);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-width: 140px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--text-dark);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-full-width {
+            width: 100%;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-top: 1.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            color: white;
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .data-table td {
+            padding: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .data-table tr:hover td {
+            background-color: rgba(119, 194, 92, 0.1);
+        }
+
+        /* Dashboard Links */
+        .dashboard-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .dashboard-link-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .dashboard-link-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-green);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-link-card h4 {
+            color: var(--primary-blue);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-link-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .dashboard-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-green);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .dashboard-link:hover {
+            color: var(--primary-blue);
+            transform: translateX(5px);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin: 2rem 0;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert-success {
+            background-color: rgba(119, 194, 92, 0.1);
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+        }
+
+        .alert-error {
+            background-color: rgba(220, 53, 69, 0.1);
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .alert-info {
+            background-color: rgba(0, 35, 56, 0.1);
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(0, 35, 56, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid var(--primary-blue);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Section Titles */
+        .section-title {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-green);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            text-align: center;
+            padding: 2rem;
+            border-top: 3px solid var(--primary-green);
+            margin-top: 3rem;
+            color: var(--text-dark);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .header-title {
+                font-size: 1.8rem;
+            }
+
+            .nav-menu {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-links {
+                grid-template-columns: 1fr;
+            }
+
+            .logo {
+                height: 50px;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 1rem; }
+        .mb-2 { margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-animation">
+        <div class="floating-shapes">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="https://github.com/AnalistaGn/dashboard-gn-e/blob/main/Norti%CC%81n%20Verde.png?raw=true" 
+                     alt="Logo Nortín Verde" class="logo">
+                <img src="https://github.com/AnalistaGn/dashboard-gn-e/blob/main/Grupo%20%5E%20Norte_%20Creamos%20.png?raw=true" 
+                     alt="Logo Grupo Norte" class="logo">
+            </div>
+            <h1 class="header-title">Sistema de Gestión Integral</h1>
+            <div class="user-info hidden" id="user-info">
+                <span>👤 <span id="current-user">Admin</span></span>
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <div class="nav-menu hidden" id="nav-menu">
+            <button class="nav-btn active" id="dashboard-nav">📊 Dashboard</button>
+            <button class="nav-btn" id="users-nav">👥 Usuarios</button>
+            <button class="nav-btn" id="analytics-nav">📈 Analytics</button>
+            <button class="nav-btn" id="logout-nav">🚪 Salir</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Login Section -->
+        <div id="login-section">
+            <div class="login-container">
+                <div class="card login-card">
+                    <div class="login-header">
+                        <h2>Bienvenido</h2>
+                        <p class="login-subtitle">Accede al sistema de gestión integral</p>
+                    </div>
+                    
+                    <div id="login-alerts"></div>
+                    
+                    <div class="form-group">
+                        <label for="username" class="form-label">Usuario</label>
+                        <input type="text" id="username" class="form-input" 
+                               placeholder="Ingresa tu nombre de usuario" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" id="password" class="form-input" 
+                               placeholder="Ingresa tu contraseña" required>
+                    </div>
+                    
+                    <button id="login-btn" class="btn btn-primary btn-full-width">
+                        🔐 Iniciar Sesión
+                    </button>
+                    
+                    <div class="mt-2 text-center">
+                        <small style="color: var(--text-light);">
+                            Usuario: <strong>admin</strong> | Contraseña: <strong>admin123</strong>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="hidden">
+            <div class="card">
+                <h2 class="section-title">📊 Dashboard Principal</h2>
+                
+                <!-- Statistics -->
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-users-stat">0</div>
+                        <div class="stat-label">👥 Usuarios Totales</div>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, var(--primary-green), var(--light-green));">
+                        <div class="stat-number" id="forms-created">15</div>
+                        <div class="stat-label">📝 Formularios Creados</div>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
+                        <div class="stat-number" id="active-sessions">3</div>
+                        <div class="stat-label">🔥 Sesiones Activas</div>
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="chart-container">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📈 Actividad del Sistema</h3>
+                    <canvas id="activity-chart" width="800" height="400"></canvas>
+                </div>
+
+                <!-- External Dashboards -->
+                <h3 class="section-title">🔗 Dashboards Externos</h3>
+                <div class="dashboard-links">
+                    <div class="dashboard-link-card">
+                        <h4>📊 Dashboard Grupo Norte (Power BI)</h4>
+                        <p>Análisis completo de datos corporativos, métricas de rendimiento y KPIs principales de la organización.</p>
+                        <a href="https://analistagn.github.io/dashboard-grupo-norte/" 
+                           target="_blank" class="dashboard-link">
+                            Acceder al Dashboard →
+                        </a>
+                    </div>
+                    
+                    <div class="dashboard-link-card">
+                        <h4>📈 Dashboard GN-E (Looker Studio)</h4>
+                        <p>Reportes especializados y visualizaciones avanzadas para el seguimiento de proyectos y operaciones.</p>
+                        <a href="https://analistagn.github.io/dashboard-gn-e/" 
+                           target="_blank" class="dashboard-link">
+                            Acceder al Dashboard →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Management Section -->
+        <div id="users-section" class="hidden">
+            <div class="card">
+                <h2 class="section-title">👥 Gestión de Usuarios</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+                    <!-- Create User Form -->
+                    <div>
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">➕ Crear Nuevo Usuario</h3>
+                        
+                        <div id="create-alerts"></div>
+                        
+                        <div class="form-group">
+                            <label for="new-username" class="form-label">Nombre de Usuario</label>
+                            <input type="text" id="new-username" class="form-input" 
+                                   placeholder="Ej: juan.perez" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="new-password" class="form-label">Contraseña</label>
+                            <input type="password" id="new-password" class="form-input" 
+                                   placeholder="Mínimo 6 caracteres" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirm-password" class="form-label">Confirmar Contraseña</label>
+                            <input type="password" id="confirm-password" class="form-input" 
+                                   placeholder="Repite la contraseña" required>
+                        </div>
+                        
+                        <button id="create-user-btn" class="btn btn-success btn-full-width">
+                            ➕ Crear Usuario
+                        </button>
+                    </div>
+
+                    <!-- Users Table -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 style="color: var(--primary-blue);">📋 Lista de Usuarios</h3>
+                            <button id="export-btn" class="btn btn-secondary">
+                                📊 Exportar CSV
+                            </button>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Usuario</th>
+                                        <th>Fecha de Creación</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                    <!-- Users will be populated here -->
+                                </tbody>
+                            </table>
+                            
+                            <div id="users-empty-state" class="empty-state">
+                                <div class="empty-icon">👥</div>
+                                <p>No hay usuarios registrados</p>
+                                <small>Crea el primer usuario usando el formulario</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div id="analytics-section" class="hidden">
+            <div class="card">
+                <h2 class="section-title">📈 Analytics y Reportes</h2>
+                
+                <div class="dashboard-grid">
+                    <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <div class="stat-number">87%</div>
+                        <div class="stat-label">📊 Uptime del Sistema</div>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                        <div class="stat-number">1,234</div>
+                        <div class="stat-label">📝 Registros Procesados</div>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                        <div class="stat-number">42</div>
+                        <div class="stat-label">⚡ Procesos Activos</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📊 Métricas de Rendimiento</h3>
+                    <div style="text-align: center; padding: 3rem; color: var(--text-light);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <p>Gráficos de analytics se mostrarían aquí</p>
+                        <small>Conectado con Firebase Analytics</small>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>🔥 Firebase Analytics Integrado:</strong> 
+                    Los datos de analytics se están recopilando automáticamente y estarán disponibles en el dashboard de Firebase Console.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Grupo Norte. Todos los derechos reservados. | Sistema de Gestión Integral v3.0</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module">
+        // Firebase Configuration
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfRmfCBc8wRNpSKRq2155I62ZLGPDj8kw",
+            authDomain: "aplicaciongn.firebaseapp.com",
+            projectId: "aplicaciongn",
+            storageBucket: "aplicaciongn.firebasestorage.app",
+            messagingSenderId: "852086423311",
+            appId: "1:852086423311:web:7df98a23ec95efbabf087a",
+            measurementId: "G-NG1S0PNJ0L"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        // Make analytics available globally
+        window.analytics = analytics;
+        window.logEvent = logEvent;
+
+        // Log page view
+        logEvent(analytics, 'page_view', {
+            page_title: 'Sistema de Gestión Integral',
+            page_location: window.location.href
+        });
+    </script>
+
+    <script>
+        // Application State
+        let users = JSON.parse(localStorage.getItem('gn_users') || '[]');
+        let currentUser = null;
+        let isLoggedIn = false;
+        let currentSection = 'dashboard';
+
+        // Default admin credentials
+        const ADMIN_CREDENTIALS = {
+            username: 'admin',
+            password: 'admin123'
+        };
+
+        // DOM Elements
+        const loginSection = document.getElementById('login-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const usersSection = document.getElementById('users-section');
+        const analyticsSection = document.getElementById('analytics-section');
+        const navMenu = document.getElementById('nav-menu');
+        const userInfo = document.getElementById('user-info');
+
+        // Navigation Elements
+        const dashboardNav = document.getElementById('dashboard-nav');
+        const usersNav = document.getElementById('users-nav');
+        const analyticsNav = document.getElementById('analytics-nav');
+        const logoutNav = document.getElementById('logout-nav');
+
+        // Form Elements
+        const loginBtn = document.getElementById('login-btn');
+        const createUserBtn = document.getElementById('create-user-btn');
+        const exportBtn = document.getElementById('export-btn');
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            loadSampleData();
+            updateStats();
+            renderUsersTable();
+            createActivityChart();
+        });
+
+        function initializeApp() {
+            // Check if user is already logged in
+            const savedSession = localStorage.getItem('gn_session');
+            if (savedSession === 'true') {
+                currentUser = JSON.parse(localStorage.getItem('gn_current_user') || '{}');
+                showMainInterface();
+            } else {
+                showLoginForm();
+            }
+
+            // Log app initialization
+            if (window.analytics) {
+                window.logEvent(window.analytics, 'app_initialized', {
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+
+        function setupEventListeners() {
+            // Login
+            loginBtn.addEventListener('click', handleLogin);
+            document.getElementById('username').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleLogin();
+            });
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleLogin();
+            });
+
+            // Navigation
+            dashboardNav.addEventListener('click', () => showSection('dashboard'));
+            usersNav.addEventListener('click', () => showSection('users'));
+            analyticsNav.addEventListener('click', () => showSection('analytics'));
+            logoutNav.addEventListener('click', handleLogout);
+
+            // User Management
+            createUserBtn.addEventListener('click', handleCreateUser);
+            document.getElementById('new-username').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleCreateUser();
+            });
+            document.getElementById('confirm-password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleCreateUser();
+            });
+
+            // Export
+            exportBtn.addEventListener('click', exportToCSV);
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                showAlert('login-alerts', 'Por favor completa todos los campos', 'error');
+                return;
+            }
+
+            // Show loading state
+            loginBtn.innerHTML = '<span class="spinner"></span>Verificando...';
+            loginBtn.disabled = true;
+
+            // Simulate API call delay
+            setTimeout(() => {
+                if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                    currentUser = { username, role: 'admin', loginTime: new Date().toISOString() };
+                    isLoggedIn = true;
+                    
+                    // Save session
+                    localStorage.setItem('gn_session', 'true');
+                    localStorage.setItem('gn_current_user', JSON.stringify(currentUser));
+                    
+                    // Log successful login
+                    if (window.analytics) {
+                        window.logEvent(window.analytics, 'login', {
+                            method: 'manual',
+                            user_type: 'admin'
+                        });
+                    }
+                    
+                    showAlert('login-alerts', '¡Bienvenido! Accediendo al sistema...', 'success');
+                    
+                    setTimeout(() => {
+                        showMainInterface();
+                        clearLoginForm();
+                    }, 1500);
+                } else {
+                    showAlert('login-alerts', 'Credenciales incorrectas. Intenta con admin/admin123', 'error');
+                    resetLoginButton();
+                    
+                    // Log failed login
+                    if (window.analytics) {
+                        window.logEvent(window.analytics, 'login_failed', {
+                            attempted_username: username
+                        });
+                    }
+                }
+            }, 1500);
+        }
+
+        function handleLogout() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                // Log logout event
+                if (window.analytics) {
+                    window.logEvent(window.analytics, 'logout', {
+                        session_duration: calculateSessionDuration()
+                    });
+                }
+
+                isLoggedIn = false;
+                currentUser = null;
+                localStorage.removeItem('gn_session');
+                localStorage.removeItem('gn_current_user');
+                
+                showLoginForm();
+                showAlert('login-alerts', 'Sesión cerrada exitosamente', 'success');
+            }
+        }
+
+        function handleCreateUser() {
+            const username = document.getElementById('new-username').value.trim();
+            const password = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            // Validation
+            if (!username || !password || !confirmPassword) {
+                showAlert('create-alerts', 'Por favor completa todos los campos', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showAlert('create-alerts', 'Las contraseñas no coinciden', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showAlert('create-alerts', 'La contraseña debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+
+            if (users.some(user => user.username === username)) {
+                showAlert('create-alerts', 'El nombre de usuario ya existe', 'error');
+                return;
+            }
+
+            // Show loading state
+            createUserBtn.innerHTML = '<span class="spinner"></span>Creando...';
+            createUserBtn.disabled = true;
+
+            setTimeout(() => {
+                // Create user
+                const newUser = {
+                    id: generateId(),
+                    username: username,
+                    password: password, // In production, this should be hashed
+                    createdAt: new Date().toISOString(),
+                    createdBy: currentUser.username
+                };
+
+                users.push(newUser);
+                saveUsers();
+                
+                // Log user creation
+                if (window.analytics) {
+                    window.logEvent(window.analytics, 'user_created', {
+                        created_by: currentUser.username,
+                        total_users: users.length
+                    });
+                }
+                
+                showAlert('create-alerts', `Usuario "${username}" creado exitosamente`, 'success');
+                clearCreateUserForm();
+                renderUsersTable();
+                updateStats();
+                
+                // Reset button
+                createUserBtn.innerHTML = '➕ Crear Usuario';
+                createUserBtn.disabled = false;
+            }, 1000);
+        }
+
+        function deleteUser(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+
+            if (confirm(`¿Estás seguro de que deseas eliminar al usuario "${user.username}"?`)) {
+                users = users.filter(user => user.id !== userId);
+                saveUsers();
+                
+                // Log user deletion
+                if (window.analytics) {
+                    window.logEvent(window.analytics, 'user_deleted', {
+                        deleted_by: currentUser.username,
+                        deleted_user: user.username,
+                        total_users: users.length
+                    });
+                }
+                
+                renderUsersTable();
+                updateStats();
+                showAlert('create-alerts', `Usuario "${user.username}" eliminado exitosamente`, 'success');
+            }
+        }
+
+        function exportToCSV() {
+            if (users.length === 0) {
+                showAlert('create-alerts', 'No hay usuarios para exportar', 'error');
+                return;
+            }
+
+            const csvContent = [
+                ['ID', 'Usuario', 'Fecha de Creación', 'Creado Por'],
+                ...users.map(user => [
+                    user.id,
+                    user.username,
+                    formatDate(user.createdAt),
+                    user.createdBy || 'Sistema'
+                ])
+            ].map(row => row.join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `usuarios_${formatDateForFile(new Date())}.csv`;
+            link.click();
+            window.URL.revokeObjectURL(url);
+
+            // Log export event
+            if (window.analytics) {
+                window.logEvent(window.analytics, 'data_exported', {
+                    export_type: 'users_csv',
+                    record_count: users.length,
+                    exported_by: currentUser.username
+                });
+            }
+
+            showAlert('create-alerts', 'Archivo CSV descargado exitosamente', 'success');
+        }
+
+        function showSection(section) {
+            // Hide all sections
+            dashboardSection.classList.add('hidden');
+            usersSection.classList.add('hidden');
+            analyticsSection.classList.add('hidden');
+
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Show selected section and mark nav button as active
+            switch(section) {
+                case 'dashboard':
+                    dashboardSection.classList.remove('hidden');
+                    dashboardNav.classList.add('active');
+                    break;
+                case 'users':
+                    usersSection.classList.remove('hidden');
+                    usersNav.classList.add('active');
+                    renderUsersTable();
+                    break;
+                case 'analytics':
+                    analyticsSection.classList.remove('hidden');
+                    analyticsNav.classList.add('active');
+                    break;
+            }
+
+            currentSection = section;
+
+            // Log section view
+            if (window.analytics) {
+                window.logEvent(window.analytics, 'page_view', {
+                    page_title: section,
+                    page_location: `${window.location.href}#${section}`
+                });
+            }
+        }
+
+        function showMainInterface() {
+            loginSection.classList.add('hidden');
+            navMenu.classList.remove('hidden');
+            userInfo.classList.remove('hidden');
+            document.getElementById('current-user').textContent = currentUser.username;
+            showSection('dashboard');
+        }
+
+        function showLoginForm() {
+            // Hide main interface
+            dashboardSection.classList.add('hidden');
+            usersSection.classList.add('hidden');
+            analyticsSection.classList.add('hidden');
+            navMenu.classList.add('hidden');
+            userInfo.classList.add('hidden');
+            
+            // Show login
+            loginSection.classList.remove('hidden');
+        }
+
+        function renderUsersTable() {
+            const tbody = document.getElementById('users-table-body');
+            const emptyState = document.getElementById('users-empty-state');
+            
+            if (users.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            
+            tbody.innerHTML = users.map(user => `
+                <tr>
+                    <td><strong>#${user.id}</strong></td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="width: 8px; height: 8px; background: var(--primary-green); border-radius: 50%; display: inline-block;"></span>
+                            <strong>${user.username}</strong>
+                        </div>
+                    </td>
+                    <td>${formatDate(user.createdAt)}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteUser('${user.id}')" 
+                                style="padding: 0.4rem 0.8rem; font-size: 0.85rem; min-width: auto;">
+                            🗑️ Eliminar
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('total-users-stat').textContent = users.length;
+            
+            const today = new Date().toDateString();
+            const usersToday = users.filter(user => 
+                new Date(user.createdAt).toDateString() === today
+            ).length;
+            
+            // Update forms created with random increment for demo
+            const formsCount = parseInt(document.getElementById('forms-created').textContent);
+            document.getElementById('forms-created').textContent = formsCount + Math.floor(Math.random() * 3);
+        }
+
+        function createActivityChart() {
+            const canvas = document.getElementById('activity-chart');
+            const ctx = canvas.getContext('2d');
+            
+            // Simple chart drawing for demo
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Chart background
+            ctx.fillStyle = '#f8f9fa';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#6c757d';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, canvas.height - 50);
+            ctx.lineTo(canvas.width - 50, canvas.height - 50);
+            ctx.moveTo(50, 50);
+            ctx.lineTo(50, canvas.height - 50);
+            ctx.stroke();
+            
+            // Draw sample data line
+            ctx.strokeStyle = '#77c25c';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            const points = [
+                {x: 100, y: 300},
+                {x: 200, y: 250},
+                {x: 300, y: 200},
+                {x: 400, y: 180},
+                {x: 500, y: 150},
+                {x: 600, y: 120},
+                {x: 700, y: 100}
+            ];
+            
+            points.forEach((point, index) => {
+                if (index === 0) {
+                    ctx.moveTo(point.x, point.y);
+                } else {
+                    ctx.lineTo(point.x, point.y);
+                }
+                
+                // Draw points
+                ctx.fillStyle = '#002338';
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            ctx.stroke();
+            
+            // Chart title
+            ctx.fillStyle = '#002338';
+            ctx.font = '16px Segoe UI';
+            ctx.textAlign = 'center';
+            ctx.fillText('Actividad del Sistema (Últimos 7 días)', canvas.width / 2, 30);
+        }
+
+        function loadSampleData() {
+            if (users.length === 0) {
+                const sampleUsers = [
+                    {
+                        id: generateId(),
+                        username: 'juan.perez',
+                        password: 'password123',
+                        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdBy: 'admin'
+                    },
+                    {
+                        id: generateId(),
+                        username: 'maria.gonzalez',
+                        password: 'secure456',
+                        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdBy: 'admin'
+                    },
+                    {
+                        id: generateId(),
+                        username: 'carlos.rodriguez',
+                        password: 'mypass789',
+                        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                        createdBy: 'admin'
+                    }
+                ];
+                users = sampleUsers;
+                saveUsers();
+            }
+        }
+
+        function showAlert(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            const alertClass = type === 'error' ? 'alert-error' : 
+                             type === 'info' ? 'alert-info' : 'alert-success';
+            
+            container.innerHTML = `
+                <div class="alert ${alertClass}">
+                    ${message}
+                </div>
+            `;
+
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        function clearLoginForm() {
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('login-alerts').innerHTML = '';
+            resetLoginButton();
+        }
+
+        function resetLoginButton() {
+            loginBtn.innerHTML = '🔐 Iniciar Sesión';
+            loginBtn.disabled = false;
+        }
+
+        function clearCreateUserForm() {
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+        }
+
+        function saveUsers() {
+            localStorage.setItem('gn_users', JSON.stringify(users));
+        }
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatDateForFile(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function calculateSessionDuration() {
+            if (!currentUser || !currentUser.loginTime) return 0;
+            return Math.floor((new Date() - new Date(currentUser.loginTime)) / 1000);
+        }
+
+        // Global function for delete buttons
+        window.deleteUser = deleteUser;
+
+        // Periodic stats update
+        setInterval(updateStats, 30000); // Update every 30 seconds
+
+        // Log user activity periodically
+        setInterval(() => {
+            if (isLoggedIn && window.analytics) {
+                window.logEvent(window.analytics, 'user_active', {
+                    current_section: currentSection,
+                    session_duration: calculateSessionDuration()
+                });
+            }
+        }, 60000); // Every minute
+    </script>
+</body>
+</html>
