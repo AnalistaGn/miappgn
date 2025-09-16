@@ -747,6 +747,9 @@
             <h1 class="header-title">Sistema de Gestión Integral</h1>
             <div class="user-info hidden" id="user-info">
                 <span>👤 <span id="current-user">Admin</span></span>
+                <button id="logout-nav" class="btn btn-secondary" onclick="handleLogout()">
+                    🚪 Cerrar Sesión
+                </button>
             </div>
         </div>
         
@@ -1874,6 +1877,10 @@
         window.handleCreateUser = handleCreateUser;
         window.handleCreateForm = handleCreateForm;
         window.handleLogin = handleLogin;
+        window.handleLogout = handleLogout;
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.exportToCSV = exportToCSV;
     </script>
 </body>
 </html>
