@@ -114,12 +114,14 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 2rem;
+            flex-wrap: wrap;
         }
 
         .logo-container {
             display: flex;
             align-items: center;
             gap: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .logo {
@@ -148,13 +150,46 @@
             gap: 1rem;
             color: var(--text-dark);
             font-weight: 600;
+            margin-bottom: 1rem;
         }
 
         /* Navigation */
         .nav-menu {
             display: flex;
-            gap: 1rem;
+            flex-direction: row; /* Explicitly set to a horizontal row */
+            gap: 1rem; /* Adjust space between items */
+            flex-wrap: nowrap; /* Prevent items from wrapping to a new line */
+            align-items: center;
             margin-top: 1rem;
+            margin-bottom: 1rem;
+            overflow-x: auto; /* Adds horizontal scrolling if content overflows */
+        }
+        
+        .tab-button-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+        
+        .tab-controls {
+            display: flex;
+            gap: 0.2rem;
+            margin-left: 0.5rem;
+        }
+        
+        .tab-controls button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.2rem;
+            color: var(--text-light);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .tab-controls button:hover {
+            color: var(--primary-blue);
+            transform: scale(1.1);
         }
 
         .nav-btn {
@@ -167,6 +202,9 @@
             cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--shadow);
+            position: relative;
+            display: flex;
+            align-items: center;
         }
 
         .nav-btn:hover {
@@ -176,6 +214,26 @@
 
         .nav-btn.active {
             background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+        }
+        
+        .add-tab-btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            font-size: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .add-tab-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
         }
 
         /* Main Content */
@@ -230,6 +288,17 @@
         .login-subtitle {
             color: var(--text-light);
             font-size: 1rem;
+        }
+        
+        .login-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .login-logos img {
+            max-height: 80px;
         }
 
         /* Form Styles */
@@ -537,6 +606,82 @@
             margin-top: 3rem;
             color: var(--text-dark);
         }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 600px;
+            width: 90%;
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: #dc3545;
+        }
+
+        /* Iframe Container */
+        .iframe-container {
+            width: 100%;
+            height: calc(100vh - 250px); /* Adjust height for a better fit */
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            background-color: white;
+        }
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -580,7 +725,6 @@
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
     <div class="background-animation">
         <div class="floating-shapes">
             <div class="bubble"></div>
@@ -594,14 +738,11 @@
         </div>
     </div>
 
-    <!-- Header -->
     <header>
         <div class="header-content">
             <div class="logo-container">
-                <img src="https://github.com/AnalistaGn/dashboard-gn-e/blob/main/Norti%CC%81n%20Verde.png?raw=true" 
-                     alt="Logo Nortín Verde" class="logo">
-                <img src="https://github.com/AnalistaGn/dashboard-gn-e/blob/main/Grupo%20%5E%20Norte_%20Creamos%20.png?raw=true" 
-                     alt="Logo Grupo Norte" class="logo">
+                <img src="https://analistagn.github.io/assets/images/logo.png" alt="Grupo Norte Logo" class="logo">
+                <img src="https://analistagn.github.io/assets/images/nortin.png" alt="Nortin Logo" class="logo">
             </div>
             <h1 class="header-title">Sistema de Gestión Integral</h1>
             <div class="user-info hidden" id="user-info">
@@ -609,22 +750,23 @@
             </div>
         </div>
         
-        <!-- Navigation Menu -->
         <div class="nav-menu hidden" id="nav-menu">
-            <button class="nav-btn active" id="dashboard-nav">📊 Dashboard</button>
-            <button class="nav-btn" id="users-nav">👥 Usuarios</button>
-            <button class="nav-btn" id="analytics-nav">📈 Analytics</button>
-            <button class="nav-btn" id="fieldbeat-nav">🌐 Fieldbeat</button>
-            <button class="nav-btn" id="logout-nav">🚪 Salir</button>
+            <div id="nav-buttons-container"></div>
+            
+            <button class="add-tab-btn" id="add-tab-btn" title="Agregar nueva pestaña">
+                +
+            </button>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main>
-        <!-- Login Section -->
         <div id="login-section">
             <div class="login-container">
                 <div class="card login-card">
+                    <div class="login-logos">
+                        <img src="https://analistagn.github.io/assets/images/logo.png" alt="Grupo Norte Logo">
+                        <img src="https://analistagn.github.io/assets/images/nortin.png" alt="Nortin Logo">
+                    </div>
                     <div class="login-header">
                         <h2>Bienvenido</h2>
                         <p class="login-subtitle">Accede al sistema de gestión integral</p>
@@ -647,257 +789,270 @@
                     <button id="login-btn" class="btn btn-primary btn-full-width">
                         🔐 Iniciar Sesión
                     </button>
-                    
-                    <div class="mt-2 text-center">
-                        <small style="color: var(--text-light);">
-                            <strong>Admin:</strong> admin / admin123<br>
-                            <strong>Reclutamiento:</strong> reclutamientogn / gruponorte1234
-                        </small>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Dashboard Section -->
-        <div id="dashboard-section" class="hidden">
-            <div class="card">
-                <h2 class="section-title">📊 Dashboard Principal</h2>
-                
-                <!-- Statistics -->
-                <div class="dashboard-grid">
-                    <div class="stat-card">
-                        <div class="stat-number" id="total-users-stat">0</div>
-                        <div class="stat-label">👥 Usuarios Totales</div>
-                    </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, var(--primary-green), var(--light-green));">
-                        <div class="stat-number" id="forms-created">0</div>
-                        <div class="stat-label">📝 Formularios Creados</div>
-                    </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
-                        <div class="stat-number" id="active-sessions">3</div>
-                        <div class="stat-label">🔥 Sesiones Activas</div>
-                    </div>
-                </div>
-
-                <!-- Create Form Section -->
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 2rem;">
-                    <div>
-                        <h3 class="section-title">📝 Crear Nuevo Formulario</h3>
-                        
-                        <div id="form-alerts"></div>
-                        
-                        <div class="form-group">
-                            <label for="form-name" class="form-label">Nombre del Formulario</label>
-                            <input type="text" id="form-name" class="form-input" 
-                                   placeholder="Ej: Registro de Empleados" required>
+        <div id="section-container">
+            <div id="dashboard-section" class="hidden">
+                <div class="card">
+                    <h2 class="section-title">📊 Dashboard Principal</h2>
+                    
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-users-stat">0</div>
+                            <div class="stat-label">👥 Usuarios Totales</div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="form-schedule" class="form-label">Horario</label>
-                            <input type="text" id="form-schedule" class="form-input" 
-                                   placeholder="Ej: 8:00 AM - 5:00 PM" required>
+                        <div class="stat-card" style="background: linear-gradient(135deg, var(--primary-green), var(--light-green));">
+                            <div class="stat-number" id="forms-created">0</div>
+                            <div class="stat-label">📝 Formularios Creados</div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="form-branch" class="form-label">Sucursal</label>
-                            <select id="form-branch" class="form-input" required>
-                                <option value="">Seleccionar sucursal...</option>
-                                <option value="central">Central</option>
-                                <option value="norte">Norte</option>
-                                <option value="sur">Sur</option>
-                                <option value="este">Este</option>
-                                <option value="oeste">Oeste</option>
-                            </select>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
+                            <div class="stat-number" id="active-sessions">3</div>
+                            <div class="stat-label">🔥 Sesiones Activas</div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="form-receiver" class="form-label">Nombre de quien recibe</label>
-                            <input type="text" id="form-receiver" class="form-input" 
-                                   placeholder="Ej: Ana García" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="form-description" class="form-label">Descripción</label>
-                            <textarea id="form-description" class="form-input" rows="3" 
-                                      placeholder="Descripción del formulario..."></textarea>
-                        </div>
-                        
-                        <button id="create-form-btn" class="btn btn-success btn-full-width">
-                            📝 Crear Formulario
-                        </button>
                     </div>
 
-                    <div>
-                        <h3 class="section-title">📋 Formularios Recientes</h3>
-                        
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Sucursal</th>
-                                        <th>Receptor</th>
-                                        <th>Fecha</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="forms-table-body">
-                                    <!-- Forms will be populated here -->
-                                </tbody>
-                            </table>
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 2rem;">
+                        <div>
+                            <h3 class="section-title">📝 Crear Nuevo Formulario</h3>
                             
-                            <div id="forms-empty-state" class="empty-state">
-                                <div class="empty-icon">📝</div>
-                                <p>No hay formularios creados</p>
-                                <small>Crea tu primer formulario usando el panel lateral</small>
+                            <div id="form-alerts"></div>
+                            
+                            <div class="form-group">
+                                <label for="form-name" class="form-label">Nombre del Formulario</label>
+                                <input type="text" id="form-name" class="form-input" 
+                                    placeholder="Ej: Registro de Empleados" required>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Chart Container -->
-                <div class="chart-container">
-                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📈 Actividad del Sistema</h3>
-                    <canvas id="activity-chart" width="800" height="400"></canvas>
-                </div>
-
-                <!-- External Dashboards -->
-                <h3 class="section-title">🔗 Dashboards Externos</h3>
-                <div class="dashboard-links">
-                    <div class="dashboard-link-card">
-                        <h4>📊 Dashboard Grupo Norte (Power BI)</h4>
-                        <p>Análisis completo de datos corporativos, métricas de rendimiento y KPIs principales de la organización.</p>
-                        <a href="https://analistagn.github.io/dashboard-grupo-norte/" 
-                           target="_blank" class="dashboard-link">
-                            Acceder al Dashboard →
-                        </a>
-                    </div>
-                    
-                    <div class="dashboard-link-card">
-                        <h4>📈 Dashboard GN-E (Looker Studio)</h4>
-                        <p>Reportes especializados y visualizaciones avanzadas para el seguimiento de proyectos y operaciones.</p>
-                        <a href="https://analistagn.github.io/dashboard-gn-e/" 
-                           target="_blank" class="dashboard-link">
-                            Acceder al Dashboard →
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Users Management Section -->
-        <div id="users-section" class="hidden">
-            <div class="card">
-                <h2 class="section-title">👥 Gestión de Usuarios</h2>
-                
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
-                    <!-- Create User Form -->
-                    <div>
-                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">➕ Crear Nuevo Usuario</h3>
-                        
-                        <div id="create-alerts"></div>
-                        
-                        <div class="form-group">
-                            <label for="new-username" class="form-label">Nombre de Usuario</label>
-                            <input type="text" id="new-username" class="form-input" 
-                                   placeholder="Ej: juan.perez" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="new-password" class="form-label">Contraseña</label>
-                            <input type="password" id="new-password" class="form-input" 
-                                   placeholder="Mínimo 6 caracteres" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="confirm-password" class="form-label">Confirmar Contraseña</label>
-                            <input type="password" id="confirm-password" class="form-input" 
-                                   placeholder="Repite la contraseña" required>
-                        </div>
-                        
-                        <button id="create-user-btn" class="btn btn-success btn-full-width">
-                            ➕ Crear Usuario
-                        </button>
-                    </div>
-
-                    <!-- Users Table -->
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                            <h3 style="color: var(--primary-blue);">📋 Lista de Usuarios</h3>
-                            <button id="export-btn" class="btn btn-secondary">
-                                📊 Exportar CSV
+                            
+                            <div class="form-group">
+                                <label for="form-schedule" class="form-label">Horario</label>
+                                <input type="text" id="form-schedule" class="form-input" 
+                                    placeholder="Ej: 8:00 AM - 5:00 PM" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="form-branch" class="form-label">Sucursal</label>
+                                <select id="form-branch" class="form-input" required>
+                                    <option value="">Seleccionar sucursal...</option>
+                                    <option value="central">Central</option>
+                                    <option value="norte">Norte</option>
+                                    <option value="sur">Sur</option>
+                                    <option value="este">Este</option>
+                                    <option value="oeste">Oeste</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="form-receiver" class="form-label">Nombre de quien recibe</label>
+                                <input type="text" id="form-receiver" class="form-input" 
+                                    placeholder="Ej: Ana García" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="form-description" class="form-label">Descripción</label>
+                                <textarea id="form-description" class="form-input" rows="3" 
+                                        placeholder="Descripción del formulario..."></textarea>
+                            </div>
+                            
+                            <button id="create-form-btn" class="btn btn-success btn-full-width">
+                                📝 Crear Formulario
                             </button>
                         </div>
-                        
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Usuario</th>
-                                        <th>Fecha de Creación</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="users-table-body">
-                                    <!-- Users will be populated here -->
-                                </tbody>
-                            </table>
+
+                        <div>
+                            <h3 class="section-title">📋 Formularios Recientes</h3>
                             
-                            <div id="users-empty-state" class="empty-state">
-                                <div class="empty-icon">👥</div>
-                                <p>No hay usuarios registrados</p>
-                                <small>Crea el primer usuario usando el formulario</small>
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Sucursal</th>
+                                            <th>Receptor</th>
+                                            <th>Fecha</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="forms-table-body">
+                                        </tbody>
+                                </table>
+                                
+                                <div id="forms-empty-state" class="empty-state">
+                                    <div class="empty-icon">📝</div>
+                                    <p>No hay formularios creados</p>
+                                    <small>Crea tu primer formulario usando el panel lateral</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📈 Actividad del Sistema</h3>
+                        <canvas id="activity-chart" width="800" height="400"></canvas>
+                    </div>
+
+                    <h3 class="section-title">🔗 Dashboards Externos</h3>
+                    <div class="dashboard-links">
+                        <div class="dashboard-link-card">
+                            <h4>📊 Dashboard Grupo Norte (Power BI)</h4>
+                            <p>Análisis completo de datos corporativos, métricas de rendimiento y KPIs principales de la organización.</p>
+                            <a href="https://analistagn.github.io/dashboard-grupo-norte/" 
+                                target="_blank" class="dashboard-link">
+                                Acceder al Dashboard →
+                            </a>
+                        </div>
+                        
+                        <div class="dashboard-link-card">
+                            <h4>📈 Dashboard GN-E (Looker Studio)</h4>
+                            <p>Reportes especializados y visualizaciones avanzadas para el seguimiento de proyectos y operaciones.</p>
+                            <a href="https://analistagn.github.io/dashboard-gn-e/" 
+                                target="_blank" class="dashboard-link">
+                                Acceder al Dashboard →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="users-section" class="hidden">
+                <div class="card">
+                    <h2 class="section-title">👥 Gestión de Usuarios</h2>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+                        <div>
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">➕ Crear Nuevo Usuario</h3>
+                            
+                            <div id="create-alerts"></div>
+                            
+                            <div class="form-group">
+                                <label for="new-username" class="form-label">Nombre de Usuario</label>
+                                <input type="text" id="new-username" class="form-input" 
+                                    placeholder="Ej: juan.perez" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="new-password" class="form-label">Contraseña</label>
+                                <input type="password" id="new-password" class="form-input" 
+                                    placeholder="Mínimo 6 caracteres" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirm-password" class="form-label">Confirmar Contraseña</label>
+                                <input type="password" id="confirm-password" class="form-input" 
+                                    placeholder="Repite la contraseña" required>
+                            </div>
+                            
+                            <button id="create-user-btn" class="btn btn-success btn-full-width">
+                                ➕ Crear Usuario
+                            </button>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <h3 style="color: var(--primary-blue);">📋 Lista de Usuarios</h3>
+                                <button id="export-btn" class="btn btn-secondary">
+                                    📊 Exportar CSV
+                                </button>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Usuario</th>
+                                            <th>Fecha de Creación</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="users-table-body">
+                                        </tbody>
+                                </table>
+                                
+                                <div id="users-empty-state" class="empty-state">
+                                    <div class="empty-icon">👥</div>
+                                    <p>No hay usuarios registrados</p>
+                                    <small>Crea el primer usuario usando el formulario</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Analytics Section -->
-        <div id="analytics-section" class="hidden">
-            <div class="card">
-                <h2 class="section-title">📈 Analytics y Reportes</h2>
-                
-                <div class="dashboard-grid">
-                    <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                        <div class="stat-number">87%</div>
-                        <div class="stat-label">📊 Uptime del Sistema</div>
+            <div id="analytics-section" class="hidden">
+                <div class="card">
+                    <h2 class="section-title">📈 Analytics y Reportes</h2>
+                    
+                    <div class="dashboard-grid">
+                        <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                            <div class="stat-number">87%</div>
+                            <div class="stat-label">📊 Uptime del Sistema</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            <div class="stat-number">1,234</div>
+                            <div class="stat-label">📝 Registros Procesados</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                            <div class="stat-number">42</div>
+                            <div class="stat-label">⚡ Procesos Activos</div>
+                        </div>
                     </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                        <div class="stat-number">1,234</div>
-                        <div class="stat-label">📝 Registros Procesados</div>
+
+                    <div class="chart-container">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📊 Métricas de Rendimiento</h3>
+                        <div style="text-align: center; padding: 3rem; color: var(--text-light);">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                            <p>Gráficos de analytics se mostrarían aquí</p>
+                            <small>Conectado con Firebase Analytics</small>
+                        </div>
                     </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
-                        <div class="stat-number">42</div>
-                        <div class="stat-label">⚡ Procesos Activos</div>
+
+                    <div class="alert alert-info">
+                        <strong>🔥 Firebase Analytics Integrado:</strong> 
+                        Los datos de analytics se están recopilando automáticamente y estarán disponibles en el dashboard de Firebase Console.
                     </div>
                 </div>
+            </div>
 
-                <div class="chart-container">
-                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📊 Métricas de Rendimiento</h3>
-                    <div style="text-align: center; padding: 3rem; color: var(--text-light);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
-                        <p>Gráficos de analytics se mostrarían aquí</p>
-                        <small>Conectado con Firebase Analytics</small>
-                    </div>
-                </div>
-
-                <div class="alert alert-info">
-                    <strong>🔥 Firebase Analytics Integrado:</strong> 
-                    Los datos de analytics se están recopilando automáticamente y estarán disponibles en el dashboard de Firebase Console.
+            <div id="iframe-section" class="hidden">
+                <div class="iframe-container">
+                    <iframe id="dynamic-iframe" width="100%" height="100%" frameborder="0"></iframe>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
+    <div id="tab-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="tab-modal-title">Agregar Nueva Pestaña</h3>
+                <button class="modal-close" onclick="closeModal('tab-modal')">&times;</button>
+            </div>
+            <div id="tab-modal-alerts"></div>
+            <form id="tab-form">
+                <input type="hidden" id="tab-id">
+                <div class="form-group">
+                    <label for="tab-name" class="form-label">Nombre de la Pestaña</label>
+                    <input type="text" id="tab-name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="tab-url" class="form-label">URL (enlace)</label>
+                    <input type="url" id="tab-url" class="form-input" placeholder="https://ejemplo.com" required>
+                </div>
+                <div style="text-align: right; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('tab-modal')">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Pestaña</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2025 Grupo Norte. Todos los derechos reservados. | Sistema de Gestión Integral v3.0</p>
+        <p>&copy; 2025 Grupo Norte. Todos los derechos reservados. | Sistema de Gestión Integral v3.1</p>
     </footer>
 
-    <!-- Scripts -->
     <script type="module">
         // Firebase Configuration
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -932,48 +1087,39 @@
         // Application State
         let users = JSON.parse(localStorage.getItem('gn_users') || '[]');
         let forms = JSON.parse(localStorage.getItem('gn_forms') || '[]');
+        let tabs = JSON.parse(localStorage.getItem('gn_tabs') || '[]');
         let currentUser = null;
         let isLoggedIn = false;
-        let currentSection = 'dashboard';
+        let currentSection = 'dashboard-section';
 
-        // Default admin credentials
-        const ADMIN_CREDENTIALS = {
-            username: 'admin',
-            password: 'admin123'
-        };
-
-        // Special user for recruitment redirection
-        const RECRUITMENT_CREDENTIALS = {
-            username: 'reclutamientogn',
-            password: 'gruponorte1234',
-            redirectUrl: 'https://analistagn.github.io/reclutamiento-gn/'
-        };
+        // Default credentials
+        const ADMIN_CREDENTIALS = { username: 'admin', password: 'admin123' };
+        const RECRUITMENT_CREDENTIALS = { username: 'reclutamientogn', password: 'gruponorte1234', redirectUrl: 'https://analistagn.github.io/reclutamiento-gn/' };
+        const DEFAULT_TABS = [
+            { id: 'dashboard-section', name: 'Dashboard', type: 'internal', active: true },
+            { id: 'users-section', name: 'Usuarios', type: 'internal', active: false },
+            { id: 'analytics-section', name: 'Analytics', type: 'internal', active: false },
+            { id: 'fieldbeat-tab', name: 'Fieldbeat', url: 'https://teams.fieldbeat.com/web/#/login', type: 'external', active: false }
+        ];
 
         // DOM Elements
         const loginSection = document.getElementById('login-section');
-        const dashboardSection = document.getElementById('dashboard-section');
-        const usersSection = document.getElementById('users-section');
-        const analyticsSection = document.getElementById('analytics-section');
         const navMenu = document.getElementById('nav-menu');
         const userInfo = document.getElementById('user-info');
+        const navButtonsContainer = document.getElementById('nav-buttons-container');
+        const addTabBtn = document.getElementById('add-tab-btn');
+        const tabModal = document.getElementById('tab-modal');
+        const tabModalTitle = document.getElementById('tab-modal-title');
+        const tabForm = document.getElementById('tab-form');
+        const tabIdInput = document.getElementById('tab-id');
+        const tabNameInput = document.getElementById('tab-name');
+        const tabUrlInput = document.getElementById('tab-url');
 
-        // Navigation Elements
-        const dashboardNav = document.getElementById('dashboard-nav');
-        const usersNav = document.getElementById('users-nav');
-        const analyticsNav = document.getElementById('analytics-nav');
-        const fieldbeatNav = document.getElementById('fieldbeat-nav');
-        const logoutNav = document.getElementById('logout-nav');
-
-        // Form Elements
-        const loginBtn = document.getElementById('login-btn');
-        const createUserBtn = document.getElementById('create-user-btn');
-        const createFormBtn = document.getElementById('create-form-btn');
-        const exportBtn = document.getElementById('export-btn');
-
-        // Initialize Application
+        // Initial setup
         document.addEventListener('DOMContentLoaded', function() {
             initializeApp();
             setupEventListeners();
+            loadDefaultTabs();
             loadSampleData();
             updateStats();
             renderUsersTable();
@@ -982,76 +1128,232 @@
         });
 
         function initializeApp() {
-            // Check if user is already logged in
             const savedSession = localStorage.getItem('gn_session');
             if (savedSession === 'true') {
                 currentUser = JSON.parse(localStorage.getItem('gn_current_user') || '{}');
+                isLoggedIn = true;
                 showMainInterface();
             } else {
                 showLoginForm();
             }
 
-            // Log app initialization
             if (window.analytics) {
-                window.logEvent(window.analytics, 'app_initialized', {
-                    timestamp: new Date().toISOString()
-                });
+                window.logEvent(window.analytics, 'app_initialized', { timestamp: new Date().toISOString() });
             }
         }
 
         function setupEventListeners() {
-            // Login
+            const loginBtn = document.getElementById('login-btn');
+            if(loginBtn) {
+                loginBtn.addEventListener('click', handleLogin);
+            }
+            document.getElementById('username').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
+            document.getElementById('password').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
+
+            if(addTabBtn) {
+                addTabBtn.addEventListener('click', openAddTabModal);
+            }
+            if(tabForm) {
+                tabForm.addEventListener('submit', handleSaveTab);
+            }
+            
+            const logoutNav = document.getElementById('logout-nav');
+            if(logoutNav) {
+                logoutNav.addEventListener('click', handleLogout);
+            }
+        }
+        
+        function loadDefaultTabs() {
+            if (tabs.length === 0) {
+                tabs = DEFAULT_TABS;
+                saveTabs();
+            }
+            renderTabs();
+        }
+        
+        function renderTabs() {
+            navButtonsContainer.innerHTML = '';
+            tabs.forEach(tab => {
+                const btn = document.createElement('button');
+                btn.classList.add('nav-btn');
+                btn.textContent = tab.name;
+                btn.setAttribute('data-tab-id', tab.id);
+
+                if (tab.active) {
+                    btn.classList.add('active');
+                    showSection(tab.id, tab.url);
+                }
+                
+                btn.addEventListener('click', () => {
+                    tabs.forEach(t => t.active = false);
+                    tab.active = true;
+                    saveTabs();
+                    renderTabs();
+                });
+                
+                const buttonGroup = document.createElement('div');
+                buttonGroup.classList.add('tab-button-group');
+                buttonGroup.appendChild(btn);
+
+                if (tab.type === 'external') {
+                    const controls = document.createElement('div');
+                    controls.classList.add('tab-controls');
+                    
+                    const editBtn = document.createElement('button');
+                    editBtn.innerHTML = '✏️';
+                    editBtn.title = 'Editar';
+                    editBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openEditTabModal(tab.id);
+                    });
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = '🗑️';
+                    deleteBtn.title = 'Eliminar';
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteTab(tab.id);
+                    });
+                    
+                    controls.appendChild(editBtn);
+                    controls.appendChild(deleteBtn);
+                    buttonGroup.appendChild(controls);
+                }
+                
+                navButtonsContainer.appendChild(buttonGroup);
+            });
+        }
+
+        function showSection(tabId, url = null) {
+            document.querySelectorAll('#section-container > div').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            if (url) {
+                const iframeSection = document.getElementById('iframe-section');
+                const iframe = document.getElementById('dynamic-iframe');
+                iframe.src = url;
+                iframeSection.classList.remove('hidden');
+            } else {
+                const section = document.getElementById(tabId);
+                if (section) {
+                    section.classList.remove('hidden');
+                }
+            }
+
+            if (window.analytics) {
+                window.logEvent(window.analytics, 'page_view', {
+                    page_title: tabId,
+                    page_location: `${window.location.href}#${tabId}`
+                });
+            }
+        }
+        
+        function openAddTabModal() {
+            tabModalTitle.textContent = 'Agregar Nueva Pestaña';
+            tabIdInput.value = '';
+            tabNameInput.value = '';
+            tabUrlInput.value = '';
+            openModal('tab-modal');
+        }
+
+        function openEditTabModal(tabId) {
+            const tabToEdit = tabs.find(tab => tab.id === tabId);
+            if (!tabToEdit) return;
+            
+            tabModalTitle.textContent = `Editar Pestaña: ${tabToEdit.name}`;
+            tabIdInput.value = tabToEdit.id;
+            tabNameInput.value = tabToEdit.name;
+            tabUrlInput.value = tabToEdit.url;
+            openModal('tab-modal');
+        }
+
+        function handleSaveTab(e) {
+            e.preventDefault();
+            const id = tabIdInput.value;
+            const name = tabNameInput.value.trim();
+            let url = tabUrlInput.value.trim();
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
+            if (id) {
+                const tabIndex = tabs.findIndex(tab => tab.id === id);
+                if (tabIndex !== -1) {
+                    tabs[tabIndex].name = name;
+                    tabs[tabIndex].url = url;
+                    showAlert('tab-modal-alerts', 'Pestaña actualizada con éxito.', 'success');
+                }
+            } else {
+                const newTab = {
+                    id: generateId(),
+                    name,
+                    url,
+                    type: 'external',
+                    active: false
+                };
+                tabs.push(newTab);
+                showAlert('tab-modal-alerts', 'Pestaña creada con éxito.', 'success');
+            }
+            saveTabs();
+            renderTabs();
+            closeModal('tab-modal');
+        }
+        
+        function deleteTab(tabId) {
+            if (confirm('¿Estás seguro de que quieres eliminar esta pestaña?')) {
+                const tabIndex = tabs.findIndex(tab => tab.id === tabId);
+                if (tabIndex !== -1) {
+                    const wasActive = tabs[tabIndex].active;
+                    tabs.splice(tabIndex, 1);
+                    
+                    if (wasActive && tabs.length > 0) {
+                        tabs[0].active = true;
+                    }
+                    saveTabs();
+                    renderTabs();
+                    showAlert('login-alerts', 'Pestaña eliminada con éxito.', 'success');
+                }
+            }
+        }
+        
+        // General Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+            const alerts = document.getElementById('tab-modal-alerts');
+            if (alerts) {
+                alerts.innerHTML = '';
+            }
+        }
+
+        // Login Logic
+        const loginBtn = document.getElementById('login-btn');
+        if(loginBtn) {
             loginBtn.addEventListener('click', handleLogin);
-            document.getElementById('username').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') handleLogin();
-            });
-            document.getElementById('password').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') handleLogin();
-            });
-
-            // Navigation
-            dashboardNav.addEventListener('click', () => showSection('dashboard'));
-            usersNav.addEventListener('click', () => showSection('users'));
-            analyticsNav.addEventListener('click', () => showSection('analytics'));
-            fieldbeatNav.addEventListener('click', () => {
-                window.open('https://teams.fieldbeat.com/web/#/login', '_blank');
-            });
-            logoutNav.addEventListener('click', handleLogout);
-
-            // Form Management
-            createFormBtn.addEventListener('click', handleCreateForm);
-
-            // User Management
-            createUserBtn.addEventListener('click', handleCreateUser);
-            document.getElementById('new-username').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') handleCreateUser();
-            });
-            document.getElementById('confirm-password').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') handleCreateUser();
-            });
-
-            // Export
-            exportBtn.addEventListener('click', exportToCSV);
         }
 
         function handleLogin() {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
             
+            const loginAlerts = document.getElementById('login-alerts');
+            loginAlerts.innerHTML = '';
+            
             if (!username || !password) {
                 showAlert('login-alerts', 'Por favor completa todos los campos', 'error');
                 return;
             }
 
-            // Show loading state
             loginBtn.innerHTML = '<span class="spinner"></span>Verificando...';
             loginBtn.disabled = true;
 
-            // Simulate API call delay
             setTimeout(() => {
-                // Check for recruitment user first
                 if (username === RECRUITMENT_CREDENTIALS.username && password === RECRUITMENT_CREDENTIALS.password) {
-                    // Log recruitment login
                     if (window.analytics) {
                         window.logEvent(window.analytics, 'recruitment_login', {
                             username: username,
@@ -1067,16 +1369,13 @@
                     return;
                 }
                 
-                // Check for admin credentials
                 if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
                     currentUser = { username, role: 'admin', loginTime: new Date().toISOString() };
                     isLoggedIn = true;
                     
-                    // Save session
                     localStorage.setItem('gn_session', 'true');
                     localStorage.setItem('gn_current_user', JSON.stringify(currentUser));
                     
-                    // Log successful login
                     if (window.analytics) {
                         window.logEvent(window.analytics, 'login', {
                             method: 'manual',
@@ -1094,7 +1393,6 @@
                     showAlert('login-alerts', 'Credenciales incorrectas. Verifica usuario y contraseña', 'error');
                     resetLoginButton();
                     
-                    // Log failed login
                     if (window.analytics) {
                         window.logEvent(window.analytics, 'login_failed', {
                             attempted_username: username
@@ -1106,7 +1404,6 @@
 
         function handleLogout() {
             if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-                // Log logout event
                 if (window.analytics) {
                     window.logEvent(window.analytics, 'logout', {
                         session_duration: calculateSessionDuration()
@@ -1123,12 +1420,13 @@
             }
         }
 
+        // Other Functions (User, Form Management, etc.)
         function handleCreateUser() {
             const username = document.getElementById('new-username').value.trim();
             const password = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
+            const createAlerts = document.getElementById('create-alerts');
             
-            // Validation
             if (!username || !password || !confirmPassword) {
                 showAlert('create-alerts', 'Por favor completa todos los campos', 'error');
                 return;
@@ -1148,17 +1446,16 @@
                 showAlert('create-alerts', 'El nombre de usuario ya existe', 'error');
                 return;
             }
-
-            // Show loading state
+            
+            const createUserBtn = document.getElementById('create-user-btn');
             createUserBtn.innerHTML = '<span class="spinner"></span>Creando...';
             createUserBtn.disabled = true;
 
             setTimeout(() => {
-                // Create user
                 const newUser = {
                     id: generateId(),
                     username: username,
-                    password: password, // In production, this should be hashed
+                    password: password, 
                     createdAt: new Date().toISOString(),
                     createdBy: currentUser.username
                 };
@@ -1166,12 +1463,8 @@
                 users.push(newUser);
                 saveUsers();
                 
-                // Log user creation
                 if (window.analytics) {
-                    window.logEvent(window.analytics, 'user_created', {
-                        created_by: currentUser.username,
-                        total_users: users.length
-                    });
+                    window.logEvent(window.analytics, 'user_created', { created_by: currentUser.username, total_users: users.length });
                 }
                 
                 showAlert('create-alerts', `Usuario "${username}" creado exitosamente`, 'success');
@@ -1179,7 +1472,6 @@
                 renderUsersTable();
                 updateStats();
                 
-                // Reset button
                 createUserBtn.innerHTML = '➕ Crear Usuario';
                 createUserBtn.disabled = false;
             }, 1000);
@@ -1192,18 +1484,16 @@
             const formReceiver = document.getElementById('form-receiver').value.trim();
             const formDescription = document.getElementById('form-description').value.trim();
             
-            // Validation
             if (!formName || !formSchedule || !formBranch || !formReceiver) {
                 showAlert('form-alerts', 'Por favor completa todos los campos obligatorios', 'error');
                 return;
             }
-
-            // Show loading state
+            
+            const createFormBtn = document.getElementById('create-form-btn');
             createFormBtn.innerHTML = '<span class="spinner"></span>Creando...';
             createFormBtn.disabled = true;
 
             setTimeout(() => {
-                // Create form
                 const newForm = {
                     id: generateId(),
                     name: formName,
@@ -1219,7 +1509,6 @@
                 forms.push(newForm);
                 saveForms();
                 
-                // Log form creation
                 if (window.analytics) {
                     window.logEvent(window.analytics, 'form_created', {
                         form_name: formName,
@@ -1234,7 +1523,6 @@
                 renderFormsTable();
                 updateStats();
                 
-                // Reset button
                 createFormBtn.innerHTML = '📝 Crear Formulario';
                 createFormBtn.disabled = false;
             }, 1000);
@@ -1248,7 +1536,6 @@
                 users = users.filter(user => user.id !== userId);
                 saveUsers();
                 
-                // Log user deletion
                 if (window.analytics) {
                     window.logEvent(window.analytics, 'user_deleted', {
                         deleted_by: currentUser.username,
@@ -1287,7 +1574,6 @@
             link.click();
             window.URL.revokeObjectURL(url);
 
-            // Log export event
             if (window.analytics) {
                 window.logEvent(window.analytics, 'data_exported', {
                     export_type: 'users_csv',
@@ -1299,60 +1585,18 @@
             showAlert('create-alerts', 'Archivo CSV descargado exitosamente', 'success');
         }
 
-        function showSection(section) {
-            // Hide all sections
-            dashboardSection.classList.add('hidden');
-            usersSection.classList.add('hidden');
-            analyticsSection.classList.add('hidden');
-
-            // Remove active class from all nav buttons
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-
-            // Show selected section and mark nav button as active
-            switch(section) {
-                case 'dashboard':
-                    dashboardSection.classList.remove('hidden');
-                    dashboardNav.classList.add('active');
-                    break;
-                case 'users':
-                    usersSection.classList.remove('hidden');
-                    usersNav.classList.add('active');
-                    renderUsersTable();
-                    break;
-                case 'analytics':
-                    analyticsSection.classList.remove('hidden');
-                    analyticsNav.classList.add('active');
-                    break;
-            }
-
-            currentSection = section;
-
-            // Log section view
-            if (window.analytics) {
-                window.logEvent(window.analytics, 'page_view', {
-                    page_title: section,
-                    page_location: `${window.location.href}#${section}`
-                });
-            }
-        }
-
         function showMainInterface() {
             loginSection.classList.add('hidden');
             navMenu.classList.remove('hidden');
             userInfo.classList.remove('hidden');
             document.getElementById('current-user').textContent = currentUser.username;
-            showSection('dashboard');
+            renderTabs();
         }
 
         function showLoginForm() {
-            // Hide main interface
-            dashboardSection.classList.add('hidden');
-            usersSection.classList.add('hidden');
-            analyticsSection.classList.add('hidden');
+            document.getElementById('section-container').classList.add('hidden');
             navMenu.classList.add('hidden');
             userInfo.classList.add('hidden');
-            
-            // Show login
             loginSection.classList.remove('hidden');
         }
 
@@ -1360,6 +1604,8 @@
             const tbody = document.getElementById('users-table-body');
             const emptyState = document.getElementById('users-empty-state');
             
+            if (!tbody || !emptyState) return;
+
             if (users.length === 0) {
                 tbody.innerHTML = '';
                 emptyState.style.display = 'block';
@@ -1387,29 +1633,58 @@
                 </tr>
             `).join('');
         }
+        
+        function renderFormsTable() {
+            const tbody = document.getElementById('forms-table-body');
+            const emptyState = document.getElementById('forms-empty-state');
+
+            if (!tbody || !emptyState) return;
+            
+            if (forms.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            tbody.innerHTML = forms.map(form => `
+                <tr>
+                    <td><strong>${form.name}</strong></td>
+                    <td>${form.branch}</td>
+                    <td>${form.receiver}</td>
+                    <td>${formatDate(form.createdAt)}</td>
+                    <td>
+                        <span style="padding: 0.3em 0.8em; background-color: rgba(119, 194, 92, 0.2); color: var(--primary-green); border-radius: 20px; font-weight: 600;">
+                            ${form.status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
 
         function updateStats() {
-            document.getElementById('total-users-stat').textContent = users.length;
-            document.getElementById('forms-created').textContent = forms.length;
-            
-            const today = new Date().toDateString();
-            const usersToday = users.filter(user => 
-                new Date(user.createdAt).toDateString() === today
-            ).length;
+            const totalUsersStat = document.getElementById('total-users-stat');
+            if (totalUsersStat) {
+                totalUsersStat.textContent = users.length;
+            }
+            const formsCreatedStat = document.getElementById('forms-created');
+            if (formsCreatedStat) {
+                formsCreatedStat.textContent = forms.length;
+            }
         }
 
         function createActivityChart() {
             const canvas = document.getElementById('activity-chart');
+            if (!canvas) return;
+
             const ctx = canvas.getContext('2d');
             
-            // Simple chart drawing for demo
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Chart background
             ctx.fillStyle = '#f8f9fa';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Draw axes
             ctx.strokeStyle = '#6c757d';
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -1419,7 +1694,6 @@
             ctx.lineTo(50, canvas.height - 50);
             ctx.stroke();
             
-            // Draw sample data line
             ctx.strokeStyle = '#77c25c';
             ctx.lineWidth = 3;
             ctx.beginPath();
@@ -1440,7 +1714,6 @@
                     ctx.lineTo(point.x, point.y);
                 }
                 
-                // Draw points
                 ctx.fillStyle = '#002338';
                 ctx.beginPath();
                 ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
@@ -1448,7 +1721,6 @@
             });
             ctx.stroke();
             
-            // Chart title
             ctx.fillStyle = '#002338';
             ctx.font = '16px Segoe UI';
             ctx.textAlign = 'center';
@@ -1516,8 +1788,9 @@
 
         function showAlert(containerId, message, type) {
             const container = document.getElementById(containerId);
-            const alertClass = type === 'error' ? 'alert-error' : 
-                             type === 'info' ? 'alert-info' : 'alert-success';
+            if (!container) return;
+
+            const alertClass = type === 'error' ? 'alert-error' : type === 'info' ? 'alert-info' : 'alert-success';
             
             container.innerHTML = `
                 <div class="alert ${alertClass}">
@@ -1525,7 +1798,6 @@
                 </div>
             `;
 
-            // Auto-hide after 5 seconds
             setTimeout(() => {
                 container.innerHTML = '';
             }, 5000);
@@ -1534,13 +1806,17 @@
         function clearLoginForm() {
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
-            document.getElementById('login-alerts').innerHTML = '';
+            const loginAlerts = document.getElementById('login-alerts');
+            if(loginAlerts) loginAlerts.innerHTML = '';
             resetLoginButton();
         }
 
         function resetLoginButton() {
-            loginBtn.innerHTML = '🔐 Iniciar Sesión';
-            loginBtn.disabled = false;
+            const loginBtn = document.getElementById('login-btn');
+            if(loginBtn) {
+                loginBtn.innerHTML = '🔐 Iniciar Sesión';
+                loginBtn.disabled = false;
+            }
         }
 
         function clearCreateUserForm() {
@@ -1563,6 +1839,10 @@
 
         function saveForms() {
             localStorage.setItem('gn_forms', JSON.stringify(forms));
+        }
+        
+        function saveTabs() {
+            localStorage.setItem('gn_tabs', JSON.stringify(tabs));
         }
 
         function generateId() {
@@ -1589,21 +1869,11 @@
             return Math.floor((new Date() - new Date(currentUser.loginTime)) / 1000);
         }
 
-        // Global function for delete buttons
+        // Expose functions to the global scope if needed for event listeners in HTML
         window.deleteUser = deleteUser;
-
-        // Periodic stats update
-        setInterval(updateStats, 30000); // Update every 30 seconds
-
-        // Log user activity periodically
-        setInterval(() => {
-            if (isLoggedIn && window.analytics) {
-                window.logEvent(window.analytics, 'user_active', {
-                    current_section: currentSection,
-                    session_duration: calculateSessionDuration()
-                });
-            }
-        }, 60000); // Every minute
+        window.handleCreateUser = handleCreateUser;
+        window.handleCreateForm = handleCreateForm;
+        window.handleLogin = handleLogin;
     </script>
 </body>
 </html>
