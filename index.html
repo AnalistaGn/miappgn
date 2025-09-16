@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión Integral - Grupo Norte</title>
+    <title>Panel de Mando Estratégico - Grupo Norte</title>
+    <link rel="icon" href="https://analistagn.github.io/assets/images/logo.png" type="image/png">
+    
     <style>
         * {
             margin: 0;
@@ -156,28 +158,39 @@
         /* Navigation */
         .nav-menu {
             display: flex;
-            flex-direction: row; /* Explicitly set to a horizontal row */
-            gap: 1rem; /* Adjust space between items */
-            flex-wrap: nowrap; /* Prevent items from wrapping to a new line */
             align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
             margin-top: 1rem;
-            margin-bottom: 1rem;
-            overflow-x: auto; /* Adds horizontal scrolling if content overflows */
+            gap: 1rem;
+            overflow-x: auto;
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
         }
-        
+
+        .nav-menu::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        #nav-buttons-container {
+            display: flex;
+            flex-wrap: nowrap; /* Keeps tabs on one line */
+            gap: 1rem;
+        }
+
         .tab-button-group {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             position: relative;
         }
-        
+
         .tab-controls {
             display: flex;
             gap: 0.2rem;
             margin-left: 0.5rem;
         }
-        
+
         .tab-controls button {
             background: none;
             border: none;
@@ -186,13 +199,14 @@
             color: var(--text-light);
             transition: color 0.3s ease, transform 0.3s ease;
         }
-        
+
         .tab-controls button:hover {
             color: var(--primary-blue);
             transform: scale(1.1);
         }
 
         .nav-btn {
+            flex-shrink: 0; /* Prevents buttons from shrinking */
             padding: 0.75rem 1.5rem;
             border: none;
             border-radius: var(--border-radius);
@@ -215,8 +229,9 @@
         .nav-btn.active {
             background: linear-gradient(135deg, var(--primary-green), var(--light-green));
         }
-        
+
         .add-tab-btn {
+            flex-shrink: 0; /* Prevents button from shrinking */
             background: linear-gradient(135deg, var(--primary-green), var(--light-green));
             color: white;
             border-radius: 50%;
@@ -230,10 +245,26 @@
             box-shadow: var(--shadow);
             transition: var(--transition);
         }
-        
+
         .add-tab-btn:hover {
             transform: scale(1.1);
             box-shadow: var(--shadow-lg);
+        }
+
+        .tab-close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
         }
 
         /* Main Content */
@@ -289,7 +320,7 @@
             color: var(--text-light);
             font-size: 1rem;
         }
-        
+
         .login-logos {
             display: flex;
             justify-content: center;
@@ -606,7 +637,7 @@
             margin-top: 3rem;
             color: var(--text-dark);
         }
-        
+
         /* Modal Styles */
         .modal-overlay {
             position: fixed;
@@ -639,11 +670,11 @@
             transition: transform 0.3s ease;
             position: relative;
         }
-        
+
         .modal-overlay.show .modal-content {
             transform: translateY(0);
         }
-        
+
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -652,13 +683,13 @@
             padding-bottom: 1rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .modal-title {
             color: var(--primary-blue);
             font-weight: 700;
             font-size: 1.5rem;
         }
-        
+
         .modal-close {
             background: none;
             border: none;
@@ -667,7 +698,7 @@
             cursor: pointer;
             transition: var(--transition);
         }
-        
+
         .modal-close:hover {
             color: #dc3545;
         }
@@ -696,8 +727,7 @@
             }
 
             .nav-menu {
-                justify-content: center;
-                flex-wrap: wrap;
+                justify-content: flex-start; /* Align to the left on small screens */
             }
 
             main {
@@ -741,24 +771,18 @@
     <header>
         <div class="header-content">
             <div class="logo-container">
-                <img src="https://github.com/AnalistaGn/dashboard-gn-e/blob/main/Grupo%20%5E%20Norte_%20Creamos%20.png?raw=true" alt="Grupo Norte Logo" class="logo">
-                <img src="https://github.com/AnalistaGn/dashboard-gn-e/blob/main/Norti%CC%81n%20Verde.png?raw=true" alt="Nortin Logo" class="logo">
+                <img src="https://analistagn.github.io/assets/images/logo.png" alt="Grupo Norte Logo" class="logo">
+                <img src="https://analistagn.github.io/assets/images/nortin.png" alt="Nortin Logo" class="logo">
             </div>
-            <h1 class="header-title">Sistema de Gestión Integral</h1>
+            <h1 class="header-title">Panel de Mando Estratégico</h1>
             <div class="user-info hidden" id="user-info">
                 <span>👤 <span id="current-user">Admin</span></span>
-                <button id="logout-nav" class="btn btn-secondary" onclick="handleLogout()">
-                    🚪 Cerrar Sesión
-                </button>
             </div>
         </div>
         
         <div class="nav-menu hidden" id="nav-menu">
             <div id="nav-buttons-container"></div>
-            
-            <button class="add-tab-btn" id="add-tab-btn" title="Agregar nueva pestaña">
-                +
-            </button>
+            <button class="add-tab-btn" id="add-tab-btn" title="Agregar nueva pestaña">+</button>
         </div>
     </header>
 
@@ -767,12 +791,12 @@
             <div class="login-container">
                 <div class="card login-card">
                     <div class="login-logos">
-                        <img src="https://github.com/AnalistaGn/dashboard-gn-e/blob/main/Grupo%20%5E%20Norte_%20Creamos%20.png?raw=true" alt="Grupo Norte Logo">
-                        <img src="https://github.com/AnalistaGn/dashboard-gn-e/blob/main/Norti%CC%81n%20Verde.png?raw=true" alt="Nortin Logo">
+                        <img src="https://analistagn.github.io/assets/images/logo.png" alt="Grupo Norte Logo">
+                        <img src="https://analistagn.github.io/assets/images/nortin.png" alt="Nortin Logo">
                     </div>
                     <div class="login-header">
-                        <h2>Bienvenido</h2>
-                        <p class="login-subtitle">Accede al sistema de gestión integral</p>
+                        <h2>Acceso a Panel de Mando</h2>
+                        <p class="login-subtitle">Inicia sesión para acceder a las métricas clave</p>
                     </div>
                     
                     <div id="login-alerts"></div>
@@ -799,63 +823,74 @@
         <div id="section-container">
             <div id="dashboard-section" class="hidden">
                 <div class="card">
-                    <h2 class="section-title">📊 Dashboard Principal</h2>
+                    <h2 class="section-title">📊 Dashboard de Operaciones</h2>
                     
                     <div class="dashboard-grid">
                         <div class="stat-card">
                             <div class="stat-number" id="total-users-stat">0</div>
-                            <div class="stat-label">👥 Usuarios Totales</div>
+                            <div class="stat-label">👥 Usuarios Activos</div>
                         </div>
                         <div class="stat-card" style="background: linear-gradient(135deg, var(--primary-green), var(--light-green));">
                             <div class="stat-number" id="forms-created">0</div>
                             <div class="stat-label">📝 Formularios Creados</div>
                         </div>
                         <div class="stat-card" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
-                            <div class="stat-number" id="active-sessions">3</div>
+                            <div class="stat-number" id="active-sessions">0</div>
                             <div class="stat-label">🔥 Sesiones Activas</div>
+                        </div>
+                    </div>
+
+                    <h3 class="section-title">📈 Métricas Clave de Negocio (KPIs)</h3>
+                    <div class="dashboard-grid">
+                        <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                            <div class="stat-number" id="completion-rate">87%</div>
+                            <div class="stat-label">✅ Tasa de Finalización de Formularios</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            <div class="stat-number" id="avg-response-time">1.2 h</div>
+                            <div class="stat-label">⏳ Tiempo Promedio de Respuesta</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                            <div class="stat-number" id="project-roi">+15%</div>
+                            <div class="stat-label">💰 ROI de Proyectos Finalizados</div>
                         </div>
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 2rem;">
                         <div>
-                            <h3 class="section-title">📝 Crear Nuevo Formulario</h3>
-                            
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📝 Crear Nuevo Formulario</h3>
                             <div id="form-alerts"></div>
                             
                             <div class="form-group">
-                                <label for="form-name" class="form-label">Nombre del Formulario</label>
+                                <label for="form-name" class="form-label">Nombre del Formulario *</label>
                                 <input type="text" id="form-name" class="form-input" 
-                                    placeholder="Ej: Registro de Empleados" required>
+                                       placeholder="Ej: Registro de Empleados" required>
                             </div>
-                            
                             <div class="form-group">
-                                <label for="form-schedule" class="form-label">Horario</label>
+                                <label for="form-schedule" class="form-label">Horario *</label>
                                 <input type="text" id="form-schedule" class="form-input" 
-                                    placeholder="Ej: 8:00 AM - 5:00 PM" required>
+                                       placeholder="Ej: 8:00 AM - 5:00 PM" required>
                             </div>
-                            
                             <div class="form-group">
-                                <label for="form-branch" class="form-label">Sucursal</label>
+                                <label for="form-branch" class="form-label">Sucursal *</label>
                                 <select id="form-branch" class="form-input" required>
                                     <option value="">Seleccionar sucursal...</option>
-                                    <option value="central">Central</option>
-                                    <option value="norte">Norte</option>
-                                    <option value="sur">Sur</option>
-                                    <option value="este">Este</option>
-                                    <option value="oeste">Oeste</option>
+                                    <option value="Central">Central</option>
+                                    <option value="Norte">Norte</option>
+                                    <option value="Sur">Sur</option>
+                                    <option value="Este">Este</option>
+                                    <option value="Oeste">Oeste</option>
                                 </select>
                             </div>
-                            
                             <div class="form-group">
-                                <label for="form-receiver" class="form-label">Nombre de quien recibe</label>
+                                <label for="form-receiver" class="form-label">Nombre de quien recibe *</label>
                                 <input type="text" id="form-receiver" class="form-input" 
-                                    placeholder="Ej: Ana García" required>
+                                       placeholder="Ej: Ana García" required>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="form-description" class="form-label">Descripción</label>
                                 <textarea id="form-description" class="form-input" rows="3" 
-                                        placeholder="Descripción del formulario..."></textarea>
+                                          placeholder="Descripción del formulario..."></textarea>
                             </div>
                             
                             <button id="create-form-btn" class="btn btn-success btn-full-width">
@@ -864,8 +899,7 @@
                         </div>
 
                         <div>
-                            <h3 class="section-title">📋 Formularios Recientes</h3>
-                            
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📋 Formularios Recientes</h3>
                             <div class="table-container">
                                 <table class="data-table">
                                     <thead>
@@ -877,40 +911,47 @@
                                             <th>Estado</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="forms-table-body">
-                                        </tbody>
+                                    <tbody id="forms-table-body"></tbody>
                                 </table>
-                                
-                                <div id="forms-empty-state" class="empty-state">
+                                <div id="forms-empty-state" class="empty-state hidden">
                                     <div class="empty-icon">📝</div>
                                     <p>No hay formularios creados</p>
                                     <small>Crea tu primer formulario usando el panel lateral</small>
                                 </div>
                             </div>
+                            <button id="export-forms-btn" class="btn btn-secondary mt-2">
+                                📊 Exportar Formularios (CSV)
+                            </button>
                         </div>
                     </div>
 
                     <div class="chart-container">
                         <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📈 Actividad del Sistema</h3>
-                        <canvas id="activity-chart" width="800" height="400"></canvas>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div>
+                                <h4>Actividad Mensual</h4>
+                                <canvas id="activity-chart" width="800" height="400"></canvas>
+                            </div>
+                            <div>
+                                <h4>Formularios por Sucursal</h4>
+                                <canvas id="branch-chart" width="800" height="400"></canvas>
+                            </div>
+                        </div>
                     </div>
 
-                    <h3 class="section-title">🔗 Dashboards Externos</h3>
+                    <h3 class="section-title">🔗 Dashboards de Business Intelligence</h3>
                     <div class="dashboard-links">
                         <div class="dashboard-link-card">
                             <h4>📊 Dashboard Grupo Norte (Power BI)</h4>
                             <p>Análisis completo de datos corporativos, métricas de rendimiento y KPIs principales de la organización.</p>
-                            <a href="https://analistagn.github.io/dashboard-grupo-norte/" 
-                                target="_blank" class="dashboard-link">
+                            <a href="https://analistagn.github.io/dashboard-grupo-norte/" target="_blank" class="dashboard-link">
                                 Acceder al Dashboard →
                             </a>
                         </div>
-                        
                         <div class="dashboard-link-card">
                             <h4>📈 Dashboard GN-E (Looker Studio)</h4>
                             <p>Reportes especializados y visualizaciones avanzadas para el seguimiento de proyectos y operaciones.</p>
-                            <a href="https://analistagn.github.io/dashboard-gn-e/" 
-                                target="_blank" class="dashboard-link">
+                            <a href="https://analistagn.github.io/dashboard-gn-e/" target="_blank" class="dashboard-link">
                                 Acceder al Dashboard →
                             </a>
                         </div>
@@ -921,64 +962,55 @@
             <div id="users-section" class="hidden">
                 <div class="card">
                     <h2 class="section-title">👥 Gestión de Usuarios</h2>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <h3 style="color: var(--primary-blue);">📋 Lista de Usuarios</h3>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                             <input type="text" id="user-search" class="form-input" placeholder="Buscar usuario...">
+                            <button id="export-users-btn" class="btn btn-secondary">
+                                📊 Exportar (CSV)
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Fecha de Creación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body"></tbody>
+                        </table>
+                        <div id="users-empty-state" class="empty-state hidden">
+                            <div class="empty-icon">👥</div>
+                            <p>No hay usuarios registrados</p>
+                            <small>Crea el primer usuario usando el formulario</small>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr; gap: 2rem;">
                         <div>
                             <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">➕ Crear Nuevo Usuario</h3>
-                            
                             <div id="create-alerts"></div>
-                            
                             <div class="form-group">
-                                <label for="new-username" class="form-label">Nombre de Usuario</label>
+                                <label for="new-username" class="form-label">Nombre de Usuario *</label>
                                 <input type="text" id="new-username" class="form-input" 
-                                    placeholder="Ej: juan.perez" required>
+                                       placeholder="Ej: juan.perez" required>
                             </div>
-                            
                             <div class="form-group">
-                                <label for="new-password" class="form-label">Contraseña</label>
+                                <label for="new-password" class="form-label">Contraseña *</label>
                                 <input type="password" id="new-password" class="form-input" 
-                                    placeholder="Mínimo 6 caracteres" required>
+                                       placeholder="Mínimo 6 caracteres" required>
                             </div>
-                            
                             <div class="form-group">
-                                <label for="confirm-password" class="form-label">Confirmar Contraseña</label>
+                                <label for="confirm-password" class="form-label">Confirmar Contraseña *</label>
                                 <input type="password" id="confirm-password" class="form-input" 
-                                    placeholder="Repite la contraseña" required>
+                                       placeholder="Repite la contraseña" required>
                             </div>
-                            
                             <button id="create-user-btn" class="btn btn-success btn-full-width">
                                 ➕ Crear Usuario
                             </button>
-                        </div>
-
-                        <div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <h3 style="color: var(--primary-blue);">📋 Lista de Usuarios</h3>
-                                <button id="export-btn" class="btn btn-secondary">
-                                    📊 Exportar CSV
-                                </button>
-                            </div>
-                            
-                            <div class="table-container">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Usuario</th>
-                                            <th>Fecha de Creación</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="users-table-body">
-                                        </tbody>
-                                </table>
-                                
-                                <div id="users-empty-state" class="empty-state">
-                                    <div class="empty-icon">👥</div>
-                                    <p>No hay usuarios registrados</p>
-                                    <small>Crea el primer usuario usando el formulario</small>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -987,34 +1019,16 @@
             <div id="analytics-section" class="hidden">
                 <div class="card">
                     <h2 class="section-title">📈 Analytics y Reportes</h2>
-                    
-                    <div class="dashboard-grid">
-                        <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                            <div class="stat-number">87%</div>
-                            <div class="stat-label">📊 Uptime del Sistema</div>
-                        </div>
-                        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                            <div class="stat-number">1,234</div>
-                            <div class="stat-label">📝 Registros Procesados</div>
-                        </div>
-                        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
-                            <div class="stat-number">42</div>
-                            <div class="stat-label">⚡ Procesos Activos</div>
-                        </div>
+                    <div class="alert alert-info">
+                        <strong>🔥 Integración con Firebase Analytics:</strong> Los datos de uso se están recopilando automáticamente y estarán disponibles en el dashboard de Firebase Console para un análisis más profundo.
                     </div>
-
                     <div class="chart-container">
                         <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📊 Métricas de Rendimiento</h3>
                         <div style="text-align: center; padding: 3rem; color: var(--text-light);">
                             <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
-                            <p>Gráficos de analytics se mostrarían aquí</p>
-                            <small>Conectado con Firebase Analytics</small>
+                            <p>Gráficos de analytics avanzados se mostrarían aquí</p>
+                            <small>Dashboard de analítica en tiempo real (requiere backend)</small>
                         </div>
-                    </div>
-
-                    <div class="alert alert-info">
-                        <strong>🔥 Firebase Analytics Integrado:</strong> 
-                        Los datos de analytics se están recopilando automáticamente y estarán disponibles en el dashboard de Firebase Console.
                     </div>
                 </div>
             </div>
@@ -1031,7 +1045,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" id="tab-modal-title">Agregar Nueva Pestaña</h3>
-                <button class="modal-close" onclick="closeModal('tab-modal')">&times;</button>
+                <button id="modal-close-btn" class="modal-close">&times;</button>
             </div>
             <div id="tab-modal-alerts"></div>
             <form id="tab-form">
@@ -1042,10 +1056,11 @@
                 </div>
                 <div class="form-group">
                     <label for="tab-url" class="form-label">URL (enlace)</label>
-                    <input type="url" id="tab-url" class="form-input" placeholder="https://ejemplo.com" required>
+                    <input type="url" id="tab-url" class="form-input" 
+                           placeholder="https://ejemplo.com" required>
                 </div>
                 <div style="text-align: right; margin-top: 1.5rem;">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('tab-modal')">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" id="modal-cancel-btn">Cancelar</button>
                     <button type="submit" class="btn btn-success">Guardar Pestaña</button>
                 </div>
             </form>
@@ -1053,11 +1068,15 @@
     </div>
 
     <footer>
-        <p>&copy; 2025 Grupo Norte. Todos los derechos reservados. | Sistema de Gestión Integral v3.1</p>
+        <p>&copy; 2025 Grupo Norte. Todos los derechos reservados. | Panel de Mando Estratégico v4.0</p>
     </footer>
 
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script type="module">
-        // Firebase Configuration
+        // Configuración de Firebase (requiere un proyecto de Firebase)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
@@ -1071,42 +1090,33 @@
             measurementId: "G-NG1S0PNJ0L"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
 
-        // Make analytics available globally
-        window.analytics = analytics;
-        window.logEvent = logEvent;
-
-        // Log page view
-        logEvent(analytics, 'page_view', {
-            page_title: 'Sistema de Gestión Integral',
-            page_location: window.location.href
-        });
-    </script>
-
-    <script>
-        // Application State
+        // Variables globales para la aplicación
         let users = JSON.parse(localStorage.getItem('gn_users') || '[]');
         let forms = JSON.parse(localStorage.getItem('gn_forms') || '[]');
         let tabs = JSON.parse(localStorage.getItem('gn_tabs') || '[]');
         let currentUser = null;
         let isLoggedIn = false;
-        let currentSection = 'dashboard-section';
+        let charts = {};
 
-        // Default credentials
+        // NOTA DE SEGURIDAD: En una aplicación real, las credenciales nunca se almacenarían así.
+        // Se usaría un sistema de autenticación seguro en el lado del servidor.
         const ADMIN_CREDENTIALS = { username: 'admin', password: 'admin123' };
         const RECRUITMENT_CREDENTIALS = { username: 'reclutamientogn', password: 'gruponorte1234', redirectUrl: 'https://analistagn.github.io/reclutamiento-gn/' };
+
+        // Definir pestañas por defecto
         const DEFAULT_TABS = [
-            { id: 'dashboard-section', name: 'Dashboard', type: 'internal', active: true },
-            { id: 'users-section', name: 'Usuarios', type: 'internal', active: false },
-            { id: 'analytics-section', name: 'Analytics', type: 'internal', active: false },
-            { id: 'fieldbeat-tab', name: 'Fieldbeat', url: 'https://teams.fieldbeat.com/web/#/login', type: 'external', active: false }
+            { id: 'dashboard-section', name: 'Dashboard', type: 'internal', active: true, deletable: false },
+            { id: 'users-section', name: 'Gestión de Usuarios', type: 'internal', active: false, deletable: false },
+            { id: 'analytics-section', name: 'Analytics', type: 'internal', active: false, deletable: false },
+            { id: 'fieldbeat-tab', name: 'Fieldbeat', url: 'https://teams.fieldbeat.com/web/#/login', type: 'external', active: false, deletable: true }
         ];
 
-        // DOM Elements
+        // Referencias a elementos del DOM
         const loginSection = document.getElementById('login-section');
+        const sectionContainer = document.getElementById('section-container');
         const navMenu = document.getElementById('nav-menu');
         const userInfo = document.getElementById('user-info');
         const navButtonsContainer = document.getElementById('nav-buttons-container');
@@ -1118,19 +1128,13 @@
         const tabNameInput = document.getElementById('tab-name');
         const tabUrlInput = document.getElementById('tab-url');
 
-        // Initial setup
+        // Inicialización de la aplicación
         document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
+            initApp();
             setupEventListeners();
-            loadDefaultTabs();
-            loadSampleData();
-            updateStats();
-            renderUsersTable();
-            renderFormsTable();
-            createActivityChart();
         });
 
-        function initializeApp() {
+        function initApp() {
             const savedSession = localStorage.getItem('gn_session');
             if (savedSession === 'true') {
                 currentUser = JSON.parse(localStorage.getItem('gn_current_user') || '{}');
@@ -1139,345 +1143,410 @@
             } else {
                 showLoginForm();
             }
-
-            if (window.analytics) {
-                window.logEvent(window.analytics, 'app_initialized', { timestamp: new Date().toISOString() });
+            if (analytics) {
+                logEvent(analytics, 'app_initialized', { timestamp: new Date().toISOString() });
             }
         }
 
+        // Configurar todos los manejadores de eventos
         function setupEventListeners() {
-            const loginBtn = document.getElementById('login-btn');
-            if(loginBtn) {
-                loginBtn.addEventListener('click', handleLogin);
-            }
-            document.getElementById('username').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
-            document.getElementById('password').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
+            document.getElementById('login-btn').addEventListener('click', handleLogin);
+            document.getElementById('username').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleLogin();
+            });
+            document.getElementById('password').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleLogin();
+            });
 
-            if(addTabBtn) {
-                addTabBtn.addEventListener('click', openAddTabModal);
-            }
-            if(tabForm) {
-                tabForm.addEventListener('submit', handleSaveTab);
-            }
+            addTabBtn.addEventListener('click', openAddTabModal);
+            tabForm.addEventListener('submit', handleSaveTab);
+
+            document.getElementById('create-form-btn').addEventListener('click', handleCreateForm);
+            document.getElementById('create-user-btn').addEventListener('click', handleCreateUser);
+
+            document.getElementById('export-users-btn').addEventListener('click', () => exportDataToCsv(users, 'usuarios'));
+            document.getElementById('export-forms-btn').addEventListener('click', () => exportDataToCsv(forms, 'formularios'));
             
+            document.getElementById('user-search').addEventListener('keyup', (e) => filterUsers(e.target.value));
+
+            document.getElementById('modal-close-btn').addEventListener('click', () => closeModal('tab-modal'));
+            document.getElementById('modal-cancel-btn').addEventListener('click', () => closeModal('tab-modal'));
+        }
+
+        // Manejo de la interfaz de usuario
+        function showMainInterface() {
+            loginSection.classList.add('hidden');
+            sectionContainer.classList.remove('hidden');
+            navMenu.classList.remove('hidden');
+            userInfo.classList.remove('hidden');
+            document.getElementById('current-user').textContent = currentUser.username;
+            document.querySelector('header .header-content').style.justifyContent = 'space-between';
+            renderHeaderWithLogout();
+            loadTabs();
+            updateDashboard();
+        }
+
+        function showLoginForm() {
+            loginSection.classList.remove('hidden');
+            sectionContainer.classList.add('hidden');
+            navMenu.classList.add('hidden');
+            userInfo.classList.add('hidden');
             const logoutNav = document.getElementById('logout-nav');
-            if(logoutNav) {
-                logoutNav.addEventListener('click', handleLogout);
+            if (logoutNav) {
+                logoutNav.remove();
             }
         }
-        
-        function loadDefaultTabs() {
+
+        function renderHeaderWithLogout() {
+            const headerContent = document.querySelector('.header-content');
+            let logoutNav = document.getElementById('logout-nav');
+            if (!logoutNav) {
+                logoutNav = document.createElement('nav');
+                logoutNav.id = 'logout-nav';
+                logoutNav.className = 'user-info';
+                logoutNav.innerHTML = `<a href="#" class="btn btn-secondary">🚪 Cerrar Sesión</a>`;
+                headerContent.appendChild(logoutNav);
+                logoutNav.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    handleLogout();
+                });
+            }
+        }
+
+        function showAlert(containerId, message, type, duration = 5000) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = message;
+            container.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.remove();
+            }, duration);
+        }
+
+        function showModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('show');
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+
+        // Lógica de autenticación
+        function handleLogin() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const loginAlerts = document.getElementById('login-alerts');
+            let userFound = false;
+
+            // Verificar credenciales estáticas
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                currentUser = { username: 'Admin', role: 'admin', loginTime: new Date() };
+                isLoggedIn = true;
+                userFound = true;
+            } else if (username === RECRUITMENT_CREDENTIALS.username && password === RECRUITMENT_CREDENTIALS.password) {
+                window.location.href = RECRUITMENT_CREDENTIALS.redirectUrl;
+                return;
+            } else {
+                // Buscar en el almacenamiento local
+                const foundUser = users.find(u => u.username === username && u.password === password);
+                if (foundUser) {
+                    currentUser = { ...foundUser, loginTime: new Date() };
+                    isLoggedIn = true;
+                    userFound = true;
+                }
+            }
+
+            if (userFound) {
+                localStorage.setItem('gn_session', 'true');
+                localStorage.setItem('gn_current_user', JSON.stringify(currentUser));
+                showMainInterface();
+                showAlert('header-alerts', `¡Bienvenido, ${currentUser.username}!`, 'success', 3000);
+                if (analytics) {
+                    logEvent(analytics, 'login', { user_role: currentUser.role || 'user' });
+                }
+            } else {
+                showAlert('login-alerts', 'Usuario o contraseña incorrectos.', 'error');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('gn_session');
+            localStorage.removeItem('gn_current_user');
+            isLoggedIn = false;
+            currentUser = null;
+            showLoginForm();
+            showAlert('login-alerts', 'Has cerrado sesión exitosamente.', 'info', 3000);
+            if (analytics) {
+                logEvent(analytics, 'logout');
+            }
+        }
+
+        // Lógica de gestión de pestañas
+        function loadTabs() {
             if (tabs.length === 0) {
                 tabs = DEFAULT_TABS;
                 saveTabs();
             }
             renderTabs();
+            // Asegurar que la pestaña activa al cargar es la correcta
+            const activeTab = tabs.find(tab => tab.active) || tabs[0];
+            if (activeTab) {
+                switchTab(activeTab.id, activeTab.url, activeTab.type);
+            }
         }
-        
+
         function renderTabs() {
             navButtonsContainer.innerHTML = '';
             tabs.forEach(tab => {
                 const btn = document.createElement('button');
-                btn.classList.add('nav-btn');
+                btn.className = `nav-btn ${tab.active ? 'active' : ''}`;
+                btn.id = tab.id;
                 btn.textContent = tab.name;
-                btn.setAttribute('data-tab-id', tab.id);
+                btn.onclick = () => switchTab(tab.id, tab.url, tab.type);
 
-                if (tab.active) {
-                    btn.classList.add('active');
-                    showSection(tab.id, tab.url);
-                }
-                
-                btn.addEventListener('click', () => {
-                    tabs.forEach(t => t.active = false);
-                    tab.active = true;
-                    saveTabs();
-                    renderTabs();
-                });
-                
-                const buttonGroup = document.createElement('div');
-                buttonGroup.classList.add('tab-button-group');
-                buttonGroup.appendChild(btn);
-
-                if (tab.type === 'external') {
-                    const controls = document.createElement('div');
-                    controls.classList.add('tab-controls');
-                    
-                    const editBtn = document.createElement('button');
-                    editBtn.innerHTML = '✏️';
-                    editBtn.title = 'Editar';
-                    editBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        openEditTabModal(tab.id);
-                    });
-                    
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.innerHTML = '🗑️';
-                    deleteBtn.title = 'Eliminar';
-                    deleteBtn.addEventListener('click', (e) => {
+                // Agregar botón de cierre solo para pestañas que pueden ser eliminadas
+                if (tab.deletable) {
+                    const closeBtn = document.createElement('span');
+                    closeBtn.innerHTML = '&times;';
+                    closeBtn.className = 'tab-close-btn';
+                    closeBtn.onclick = (e) => {
                         e.stopPropagation();
                         deleteTab(tab.id);
-                    });
-                    
-                    controls.appendChild(editBtn);
-                    controls.appendChild(deleteBtn);
-                    buttonGroup.appendChild(controls);
+                    };
+                    btn.appendChild(closeBtn);
                 }
                 
-                navButtonsContainer.appendChild(buttonGroup);
+                navButtonsContainer.appendChild(btn);
             });
         }
 
-        function showSection(tabId, url = null) {
+        function switchTab(id, url, type) {
+            tabs.forEach(tab => {
+                tab.active = (tab.id === id);
+            });
+            saveTabs();
+            renderTabs();
+            
             document.querySelectorAll('#section-container > div').forEach(section => {
                 section.classList.add('hidden');
             });
-            
-            if (url) {
+
+            if (type === 'internal') {
+                const section = document.getElementById(id);
+                if (section) {
+                    section.classList.remove('hidden');
+                }
+            } else if (type === 'external') {
                 const iframeSection = document.getElementById('iframe-section');
                 const iframe = document.getElementById('dynamic-iframe');
                 iframe.src = url;
                 iframeSection.classList.remove('hidden');
-            } else {
-                const section = document.getElementById(tabId);
-                if (section) {
-                    section.classList.remove('hidden');
-                }
             }
-
-            if (window.analytics) {
-                window.logEvent(window.analytics, 'page_view', {
-                    page_title: tabId,
-                    page_location: `${window.location.href}#${tabId}`
-                });
+            
+            if (analytics) {
+                logEvent(analytics, 'tab_switched', { tab_id: id, tab_type: type });
             }
         }
-        
+
         function openAddTabModal() {
             tabModalTitle.textContent = 'Agregar Nueva Pestaña';
             tabIdInput.value = '';
             tabNameInput.value = '';
             tabUrlInput.value = '';
-            openModal('tab-modal');
+            document.getElementById('tab-modal-alerts').innerHTML = '';
+            showModal('tab-modal');
         }
 
-        function openEditTabModal(tabId) {
-            const tabToEdit = tabs.find(tab => tab.id === tabId);
-            if (!tabToEdit) return;
+        function handleSaveTab(event) {
+            event.preventDefault();
+            const tabName = tabNameInput.value.trim();
+            const tabUrl = tabUrlInput.value.trim();
+
+            if (!tabName || !tabUrl) {
+                showAlert('tab-modal-alerts', 'El nombre y la URL de la pestaña son obligatorios.', 'error');
+                return;
+            }
+
+            const newTab = {
+                id: generateId(),
+                name: tabName,
+                url: tabUrl,
+                type: 'external',
+                active: false,
+                deletable: true
+            };
             
-            tabModalTitle.textContent = `Editar Pestaña: ${tabToEdit.name}`;
-            tabIdInput.value = tabToEdit.id;
-            tabNameInput.value = tabToEdit.name;
-            tabUrlInput.value = tabToEdit.url;
-            openModal('tab-modal');
-        }
-
-        function handleSaveTab(e) {
-            e.preventDefault();
-            const id = tabIdInput.value;
-            const name = tabNameInput.value.trim();
-            let url = tabUrlInput.value.trim();
-
-            if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                url = 'https://' + url;
-            }
-
-            if (id) {
-                const tabIndex = tabs.findIndex(tab => tab.id === id);
-                if (tabIndex !== -1) {
-                    tabs[tabIndex].name = name;
-                    tabs[tabIndex].url = url;
-                    showAlert('tab-modal-alerts', 'Pestaña actualizada con éxito.', 'success');
-                }
-            } else {
-                const newTab = {
-                    id: generateId(),
-                    name,
-                    url,
-                    type: 'external',
-                    active: false
-                };
-                tabs.push(newTab);
-                showAlert('tab-modal-alerts', 'Pestaña creada con éxito.', 'success');
-            }
+            tabs.push(newTab);
             saveTabs();
             renderTabs();
             closeModal('tab-modal');
+            
+            showAlert('header-alerts', 'Pestaña agregada exitosamente.', 'success', 3000);
+            
+            if (analytics) {
+                logEvent(analytics, 'tab_added', { tab_name: tabName });
+            }
         }
-        
-        function deleteTab(tabId) {
+
+        function deleteTab(id) {
             if (confirm('¿Estás seguro de que quieres eliminar esta pestaña?')) {
-                const tabIndex = tabs.findIndex(tab => tab.id === tabId);
-                if (tabIndex !== -1) {
-                    const wasActive = tabs[tabIndex].active;
-                    tabs.splice(tabIndex, 1);
-                    
-                    if (wasActive && tabs.length > 0) {
-                        tabs[0].active = true;
-                    }
-                    saveTabs();
-                    renderTabs();
-                    showAlert('login-alerts', 'Pestaña eliminada con éxito.', 'success');
-                }
-            }
-        }
-        
-        // General Modal Functions
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('show');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('show');
-            const alerts = document.getElementById('tab-modal-alerts');
-            if (alerts) {
-                alerts.innerHTML = '';
-            }
-        }
-
-        // Login Logic
-        const loginBtn = document.getElementById('login-btn');
-        if(loginBtn) {
-            loginBtn.addEventListener('click', handleLogin);
-        }
-
-        function handleLogin() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            
-            const loginAlerts = document.getElementById('login-alerts');
-            loginAlerts.innerHTML = '';
-            
-            if (!username || !password) {
-                showAlert('login-alerts', 'Por favor completa todos los campos', 'error');
-                return;
-            }
-
-            loginBtn.innerHTML = '<span class="spinner"></span>Verificando...';
-            loginBtn.disabled = true;
-
-            setTimeout(() => {
-                if (username === RECRUITMENT_CREDENTIALS.username && password === RECRUITMENT_CREDENTIALS.password) {
-                    if (window.analytics) {
-                        window.logEvent(window.analytics, 'recruitment_login', {
-                            username: username,
-                            redirect_url: RECRUITMENT_CREDENTIALS.redirectUrl
-                        });
-                    }
-                    
-                    showAlert('login-alerts', 'Acceso de reclutamiento. Redirigiendo...', 'success');
-                    
-                    setTimeout(() => {
-                        window.location.href = RECRUITMENT_CREDENTIALS.redirectUrl;
-                    }, 1500);
+                const tabToDelete = tabs.find(tab => tab.id === id);
+                if (!tabToDelete || !tabToDelete.deletable) {
+                    showAlert('header-alerts', 'No se puede eliminar esta pestaña.', 'error');
                     return;
                 }
+
+                const wasActive = tabToDelete.active;
+                tabs = tabs.filter(tab => tab.id !== id);
+                saveTabs();
+                renderTabs();
                 
-                if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-                    currentUser = { username, role: 'admin', loginTime: new Date().toISOString() };
-                    isLoggedIn = true;
-                    
-                    localStorage.setItem('gn_session', 'true');
-                    localStorage.setItem('gn_current_user', JSON.stringify(currentUser));
-                    
-                    if (window.analytics) {
-                        window.logEvent(window.analytics, 'login', {
-                            method: 'manual',
-                            user_type: 'admin'
-                        });
-                    }
-                    
-                    showAlert('login-alerts', '¡Bienvenido! Accediendo al sistema...', 'success');
-                    
-                    setTimeout(() => {
-                        showMainInterface();
-                        clearLoginForm();
-                    }, 1500);
-                } else {
-                    showAlert('login-alerts', 'Credenciales incorrectas. Verifica usuario y contraseña', 'error');
-                    resetLoginButton();
-                    
-                    if (window.analytics) {
-                        window.logEvent(window.analytics, 'login_failed', {
-                            attempted_username: username
-                        });
+                showAlert('header-alerts', 'Pestaña eliminada.', 'info', 3000);
+                
+                if (wasActive) {
+                    const defaultTab = tabs.find(tab => tab.id === 'dashboard-section') || tabs[0];
+                    if (defaultTab) {
+                        switchTab(defaultTab.id, defaultTab.url, defaultTab.type);
                     }
                 }
-            }, 1500);
-        }
-
-        function handleLogout() {
-            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-                if (window.analytics) {
-                    window.logEvent(window.analytics, 'logout', {
-                        session_duration: calculateSessionDuration()
-                    });
+                if (analytics) {
+                    logEvent(analytics, 'tab_deleted', { tab_id: id });
                 }
-
-                isLoggedIn = false;
-                currentUser = null;
-                localStorage.removeItem('gn_session');
-                localStorage.removeItem('gn_current_user');
-                
-                showLoginForm();
-                showAlert('login-alerts', 'Sesión cerrada exitosamente', 'success');
             }
         }
 
-        // Other Functions (User, Form Management, etc.)
+        // Lógica del Dashboard y datos
+        function updateDashboard() {
+            updateStats();
+            renderUsersTable();
+            renderFormsTable();
+            renderCharts();
+        }
+
+        function updateStats() {
+            document.getElementById('total-users-stat').textContent = users.length;
+            document.getElementById('forms-created').textContent = forms.length;
+            document.getElementById('active-sessions').textContent = Math.floor(Math.random() * 10) + 1;
+        }
+
+        function renderUsersTable(filteredUsers = users) {
+            const tableBody = document.getElementById('users-table-body');
+            if (!tableBody) return;
+            tableBody.innerHTML = '';
+            
+            if (filteredUsers.length === 0) {
+                document.getElementById('users-empty-state').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('users-empty-state').classList.add('hidden');
+
+            filteredUsers.forEach(user => {
+                const row = document.createElement('tr');
+                const isDeletable = user.username !== 'admin';
+                row.innerHTML = `
+                    <td>${user.id.substring(0, 6)}...</td>
+                    <td>${user.username}</td>
+                    <td>${formatDate(user.createdAt)}</td>
+                    <td>
+                        ${isDeletable ? `<button class="btn btn-danger btn-sm" onclick="deleteUser('${user.id}')">Eliminar</button>` : 'N/A'}
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function filterUsers(searchTerm) {
+            const filtered = users.filter(user => 
+                user.username.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                user.id.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            renderUsersTable(filtered);
+        }
+
         function handleCreateUser() {
-            const username = document.getElementById('new-username').value.trim();
-            const password = document.getElementById('new-password').value;
+            const newUsername = document.getElementById('new-username').value.trim();
+            const newPassword = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
             const createAlerts = document.getElementById('create-alerts');
-            
-            if (!username || !password || !confirmPassword) {
-                showAlert('create-alerts', 'Por favor completa todos los campos', 'error');
+
+            if (!newUsername || !newPassword || !confirmPassword) {
+                showAlert('create-alerts', 'Todos los campos son obligatorios.', 'error');
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                showAlert('create-alerts', 'Las contraseñas no coinciden.', 'error');
+                return;
+            }
+            if (newPassword.length < 6) {
+                showAlert('create-alerts', 'La contraseña debe tener al menos 6 caracteres.', 'error');
+                return;
+            }
+            if (users.some(u => u.username === newUsername)) {
+                showAlert('create-alerts', 'El nombre de usuario ya existe.', 'error');
                 return;
             }
 
-            if (password !== confirmPassword) {
-                showAlert('create-alerts', 'Las contraseñas no coinciden', 'error');
+            const newUser = {
+                id: generateId(),
+                username: newUsername,
+                password: newPassword, // En una aplicación real, la contraseña NUNCA se almacenaría en texto plano.
+                createdAt: new Date().toISOString()
+            };
+            users.push(newUser);
+            saveUsers();
+            updateDashboard();
+            showAlert('create-alerts', `Usuario '${newUsername}' creado exitosamente.`, 'success');
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+        }
+
+        function deleteUser(id) {
+            const userToDelete = users.find(user => user.id === id);
+            if (userToDelete && userToDelete.username === 'admin') {
+                showAlert('users-section', 'No se puede eliminar el usuario administrador.', 'error');
                 return;
             }
 
-            if (password.length < 6) {
-                showAlert('create-alerts', 'La contraseña debe tener al menos 6 caracteres', 'error');
-                return;
-            }
-
-            if (users.some(user => user.username === username)) {
-                showAlert('create-alerts', 'El nombre de usuario ya existe', 'error');
-                return;
-            }
-            
-            const createUserBtn = document.getElementById('create-user-btn');
-            createUserBtn.innerHTML = '<span class="spinner"></span>Creando...';
-            createUserBtn.disabled = true;
-
-            setTimeout(() => {
-                const newUser = {
-                    id: generateId(),
-                    username: username,
-                    password: password, 
-                    createdAt: new Date().toISOString(),
-                    createdBy: currentUser.username
-                };
-
-                users.push(newUser);
+            if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+                users = users.filter(user => user.id !== id);
                 saveUsers();
-                
-                if (window.analytics) {
-                    window.logEvent(window.analytics, 'user_created', { created_by: currentUser.username, total_users: users.length });
-                }
-                
-                showAlert('create-alerts', `Usuario "${username}" creado exitosamente`, 'success');
-                clearCreateUserForm();
-                renderUsersTable();
-                updateStats();
-                
-                createUserBtn.innerHTML = '➕ Crear Usuario';
-                createUserBtn.disabled = false;
-            }, 1000);
+                updateDashboard();
+                showAlert('users-section', 'Usuario eliminado.', 'info', 3000);
+            }
+        }
+
+        function renderFormsTable() {
+            const tableBody = document.getElementById('forms-table-body');
+            if (!tableBody) return;
+            tableBody.innerHTML = '';
+            if (forms.length === 0) {
+                document.getElementById('forms-empty-state').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('forms-empty-state').classList.add('hidden');
+
+            forms.forEach(form => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${form.name}</td>
+                    <td>${form.branch}</td>
+                    <td>${form.receiver}</td>
+                    <td>${formatDate(form.date)}</td>
+                    <td>${form.status}</td>
+                `;
+                tableBody.appendChild(row);
+            });
         }
 
         function handleCreateForm() {
@@ -1486,356 +1555,38 @@
             const formBranch = document.getElementById('form-branch').value;
             const formReceiver = document.getElementById('form-receiver').value.trim();
             const formDescription = document.getElementById('form-description').value.trim();
-            
+
             if (!formName || !formSchedule || !formBranch || !formReceiver) {
-                showAlert('form-alerts', 'Por favor completa todos los campos obligatorios', 'error');
-                return;
-            }
-            
-            const createFormBtn = document.getElementById('create-form-btn');
-            createFormBtn.innerHTML = '<span class="spinner"></span>Creando...';
-            createFormBtn.disabled = true;
-
-            setTimeout(() => {
-                const newForm = {
-                    id: generateId(),
-                    name: formName,
-                    schedule: formSchedule,
-                    branch: formBranch,
-                    receiver: formReceiver,
-                    description: formDescription,
-                    status: 'Activo',
-                    createdAt: new Date().toISOString(),
-                    createdBy: currentUser.username
-                };
-
-                forms.push(newForm);
-                saveForms();
-                
-                if (window.analytics) {
-                    window.logEvent(window.analytics, 'form_created', {
-                        form_name: formName,
-                        branch: formBranch,
-                        created_by: currentUser.username,
-                        total_forms: forms.length
-                    });
-                }
-                
-                showAlert('form-alerts', `Formulario "${formName}" creado exitosamente`, 'success');
-                clearCreateFormForm();
-                renderFormsTable();
-                updateStats();
-                
-                createFormBtn.innerHTML = '📝 Crear Formulario';
-                createFormBtn.disabled = false;
-            }, 1000);
-        }
-
-        function deleteUser(userId) {
-            const user = users.find(u => u.id === userId);
-            if (!user) return;
-
-            if (confirm(`¿Estás seguro de que deseas eliminar al usuario "${user.username}"?`)) {
-                users = users.filter(user => user.id !== userId);
-                saveUsers();
-                
-                if (window.analytics) {
-                    window.logEvent(window.analytics, 'user_deleted', {
-                        deleted_by: currentUser.username,
-                        deleted_user: user.username,
-                        total_users: users.length
-                    });
-                }
-                
-                renderUsersTable();
-                updateStats();
-                showAlert('create-alerts', `Usuario "${user.username}" eliminado exitosamente`, 'success');
-            }
-        }
-
-        function exportToCSV() {
-            if (users.length === 0) {
-                showAlert('create-alerts', 'No hay usuarios para exportar', 'error');
+                showAlert('form-alerts', 'Todos los campos marcados con * son obligatorios.', 'error');
                 return;
             }
 
-            const csvContent = [
-                ['ID', 'Usuario', 'Fecha de Creación', 'Creado Por'],
-                ...users.map(user => [
-                    user.id,
-                    user.username,
-                    formatDate(user.createdAt),
-                    user.createdBy || 'Sistema'
-                ])
-            ].map(row => row.join(',')).join('\n');
+            const newForm = {
+                id: generateId(),
+                name: formName,
+                schedule: formSchedule,
+                branch: formBranch,
+                receiver: formReceiver,
+                description: formDescription,
+                date: new Date().toISOString(),
+                status: 'Pendiente'
+            };
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `usuarios_${formatDateForFile(new Date())}.csv`;
-            link.click();
-            window.URL.revokeObjectURL(url);
-
-            if (window.analytics) {
-                window.logEvent(window.analytics, 'data_exported', {
-                    export_type: 'users_csv',
-                    record_count: users.length,
-                    exported_by: currentUser.username
-                });
-            }
-
-            showAlert('create-alerts', 'Archivo CSV descargado exitosamente', 'success');
-        }
-
-        function showMainInterface() {
-            loginSection.classList.add('hidden');
-            navMenu.classList.remove('hidden');
-            userInfo.classList.remove('hidden');
-            document.getElementById('current-user').textContent = currentUser.username;
-            renderTabs();
-        }
-
-        function showLoginForm() {
-            document.getElementById('section-container').classList.add('hidden');
-            navMenu.classList.add('hidden');
-            userInfo.classList.add('hidden');
-            loginSection.classList.remove('hidden');
-        }
-
-        function renderUsersTable() {
-            const tbody = document.getElementById('users-table-body');
-            const emptyState = document.getElementById('users-empty-state');
-            
-            if (!tbody || !emptyState) return;
-
-            if (users.length === 0) {
-                tbody.innerHTML = '';
-                emptyState.style.display = 'block';
-                return;
-            }
-
-            emptyState.style.display = 'none';
-            
-            tbody.innerHTML = users.map(user => `
-                <tr>
-                    <td><strong>#${user.id}</strong></td>
-                    <td>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="width: 8px; height: 8px; background: var(--primary-green); border-radius: 50%; display: inline-block;"></span>
-                            <strong>${user.username}</strong>
-                        </div>
-                    </td>
-                    <td>${formatDate(user.createdAt)}</td>
-                    <td>
-                        <button class="btn btn-danger" onclick="deleteUser('${user.id}')" 
-                                style="padding: 0.4rem 0.8rem; font-size: 0.85rem; min-width: auto;">
-                            🗑️ Eliminar
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-        
-        function renderFormsTable() {
-            const tbody = document.getElementById('forms-table-body');
-            const emptyState = document.getElementById('forms-empty-state');
-
-            if (!tbody || !emptyState) return;
-            
-            if (forms.length === 0) {
-                tbody.innerHTML = '';
-                emptyState.style.display = 'block';
-                return;
-            }
-            
-            emptyState.style.display = 'none';
-            
-            tbody.innerHTML = forms.map(form => `
-                <tr>
-                    <td><strong>${form.name}</strong></td>
-                    <td>${form.branch}</td>
-                    <td>${form.receiver}</td>
-                    <td>${formatDate(form.createdAt)}</td>
-                    <td>
-                        <span style="padding: 0.3em 0.8em; background-color: rgba(119, 194, 92, 0.2); color: var(--primary-green); border-radius: 20px; font-weight: 600;">
-                            ${form.status}
-                        </span>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function updateStats() {
-            const totalUsersStat = document.getElementById('total-users-stat');
-            if (totalUsersStat) {
-                totalUsersStat.textContent = users.length;
-            }
-            const formsCreatedStat = document.getElementById('forms-created');
-            if (formsCreatedStat) {
-                formsCreatedStat.textContent = forms.length;
-            }
-        }
-
-        function createActivityChart() {
-            const canvas = document.getElementById('activity-chart');
-            if (!canvas) return;
-
-            const ctx = canvas.getContext('2d');
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = '#f8f9fa';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.strokeStyle = '#6c757d';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(50, canvas.height - 50);
-            ctx.lineTo(canvas.width - 50, canvas.height - 50);
-            ctx.moveTo(50, 50);
-            ctx.lineTo(50, canvas.height - 50);
-            ctx.stroke();
-            
-            ctx.strokeStyle = '#77c25c';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            const points = [
-                {x: 100, y: 300},
-                {x: 200, y: 250},
-                {x: 300, y: 200},
-                {x: 400, y: 180},
-                {x: 500, y: 150},
-                {x: 600, y: 120},
-                {x: 700, y: 100}
-            ];
-            
-            points.forEach((point, index) => {
-                if (index === 0) {
-                    ctx.moveTo(point.x, point.y);
-                } else {
-                    ctx.lineTo(point.x, point.y);
-                }
-                
-                ctx.fillStyle = '#002338';
-                ctx.beginPath();
-                ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-            ctx.stroke();
-            
-            ctx.fillStyle = '#002338';
-            ctx.font = '16px Segoe UI';
-            ctx.textAlign = 'center';
-            ctx.fillText('Actividad del Sistema (Últimos 7 días)', canvas.width / 2, 30);
-        }
-
-        function loadSampleData() {
-            if (users.length === 0) {
-                const sampleUsers = [
-                    {
-                        id: generateId(),
-                        username: 'juan.perez',
-                        password: 'password123',
-                        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-                        createdBy: 'admin'
-                    },
-                    {
-                        id: generateId(),
-                        username: 'maria.gonzalez',
-                        password: 'secure456',
-                        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-                        createdBy: 'admin'
-                    },
-                    {
-                        id: generateId(),
-                        username: 'carlos.rodriguez',
-                        password: 'mypass789',
-                        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-                        createdBy: 'admin'
-                    }
-                ];
-                users = sampleUsers;
-                saveUsers();
-            }
-
-            if (forms.length === 0) {
-                const sampleForms = [
-                    {
-                        id: generateId(),
-                        name: 'Registro de Empleados',
-                        schedule: '8:00 AM - 5:00 PM',
-                        branch: 'central',
-                        receiver: 'Ana García',
-                        description: 'Formulario para registro de nuevos empleados',
-                        status: 'Activo',
-                        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-                        createdBy: 'admin'
-                    },
-                    {
-                        id: generateId(),
-                        name: 'Evaluación de Desempeño',
-                        schedule: '9:00 AM - 6:00 PM',
-                        branch: 'norte',
-                        receiver: 'Carlos López',
-                        description: 'Formulario para evaluaciones mensuales',
-                        status: 'Activo',
-                        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-                        createdBy: 'admin'
-                    }
-                ];
-                forms = sampleForms;
-                saveForms();
-            }
-        }
-
-        function showAlert(containerId, message, type) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-
-            const alertClass = type === 'error' ? 'alert-error' : type === 'info' ? 'alert-info' : 'alert-success';
-            
-            container.innerHTML = `
-                <div class="alert ${alertClass}">
-                    ${message}
-                </div>
-            `;
-
-            setTimeout(() => {
-                container.innerHTML = '';
-            }, 5000);
-        }
-
-        function clearLoginForm() {
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            const loginAlerts = document.getElementById('login-alerts');
-            if(loginAlerts) loginAlerts.innerHTML = '';
-            resetLoginButton();
-        }
-
-        function resetLoginButton() {
-            const loginBtn = document.getElementById('login-btn');
-            if(loginBtn) {
-                loginBtn.innerHTML = '🔐 Iniciar Sesión';
-                loginBtn.disabled = false;
-            }
-        }
-
-        function clearCreateUserForm() {
-            document.getElementById('new-username').value = '';
-            document.getElementById('new-password').value = '';
-            document.getElementById('confirm-password').value = '';
-        }
-
-        function clearCreateFormForm() {
+            forms.push(newForm);
+            saveForms();
+            updateDashboard();
+            showAlert('form-alerts', `Formulario '${formName}' creado exitosamente.`, 'success');
             document.getElementById('form-name').value = '';
             document.getElementById('form-schedule').value = '';
             document.getElementById('form-branch').value = '';
             document.getElementById('form-receiver').value = '';
             document.getElementById('form-description').value = '';
+            if (analytics) {
+                logEvent(analytics, 'form_created', { form_name: formName, form_branch: formBranch });
+            }
         }
 
+        // Lógica de datos y utilidades
         function saveUsers() {
             localStorage.setItem('gn_users', JSON.stringify(users));
         }
@@ -1843,7 +1594,7 @@
         function saveForms() {
             localStorage.setItem('gn_forms', JSON.stringify(forms));
         }
-        
+
         function saveTabs() {
             localStorage.setItem('gn_tabs', JSON.stringify(tabs));
         }
@@ -1863,24 +1614,122 @@
             });
         }
 
+        function exportDataToCsv(data, filename) {
+            if (data.length === 0) {
+                alert('No hay datos para exportar.');
+                return;
+            }
+
+            const headers = Object.keys(data[0]);
+            const csvContent = "data:text/csv;charset=utf-8," 
+                               + headers.join(',') + '\n'
+                               + data.map(row => headers.map(header => JSON.stringify(row[header])).join(',')).join('\n');
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `${filename}-${formatDateForFile(new Date())}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            if (analytics) {
+                logEvent(analytics, 'data_exported', { dataset: filename });
+            }
+        }
+
         function formatDateForFile(date) {
             return date.toISOString().split('T')[0];
         }
 
-        function calculateSessionDuration() {
-            if (!currentUser || !currentUser.loginTime) return 0;
-            return Math.floor((new Date() - new Date(currentUser.loginTime)) / 1000);
+        // Lógica de los gráficos con Chart.js
+        function renderCharts() {
+            const style = getComputedStyle(document.body);
+            const primaryBlue = style.getPropertyValue('--primary-blue');
+            const primaryGreen = style.getPropertyValue('--primary-green');
+
+            // Gráfico de Actividad Mensual
+            const activityChartCtx = document.getElementById('activity-chart');
+            if (charts.activityChart) {
+                charts.activityChart.destroy();
+            }
+            const activityData = {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul'],
+                datasets: [
+                    {
+                        label: 'Logins',
+                        data: [15, 20, 30, 45, 40, 50, 60],
+                        borderColor: primaryBlue,
+                        backgroundColor: 'rgba(0, 35, 56, 0.2)',
+                        fill: false,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Formularios Creados',
+                        data: [5, 8, 12, 10, 15, 18, 25],
+                        borderColor: primaryGreen,
+                        backgroundColor: 'rgba(119, 194, 92, 0.2)',
+                        fill: false,
+                        tension: 0.4
+                    }
+                ]
+            };
+            charts.activityChart = new Chart(activityChartCtx, {
+                type: 'line',
+                data: activityData,
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+            
+            // Gráfico de Barras: Formularios por Sucursal
+            const branchChartCtx = document.getElementById('branch-chart');
+            if (charts.branchChart) {
+                charts.branchChart.destroy();
+            }
+            
+            const branchCounts = forms.reduce((acc, form) => {
+                acc[form.branch] = (acc[form.branch] || 0) + 1;
+                return acc;
+            }, {});
+
+            const branchLabels = Object.keys(branchCounts);
+            const branchData = Object.values(branchCounts);
+
+            const branchChartData = {
+                labels: branchLabels,
+                datasets: [{
+                    label: 'Formularios Creados',
+                    data: branchData,
+                    backgroundColor: [
+                        'rgba(0, 35, 56, 0.8)',
+                        'rgba(119, 194, 92, 0.8)',
+                        'rgba(0, 75, 102, 0.8)',
+                        'rgba(163, 212, 122, 0.8)',
+                        'rgba(255, 107, 107, 0.8)'
+                    ],
+                    borderColor: [
+                        primaryBlue,
+                        primaryGreen,
+                        'var(--light-blue)',
+                        'var(--light-green)',
+                        '#ff6b6b'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            charts.branchChart = new Chart(branchChartCtx, {
+                type: 'bar',
+                data: branchChartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
         }
 
-        // Expose functions to the global scope if needed for event listeners in HTML
+        // Exponer funciones al ámbito global si se necesitan en HTML (ej. onclick)
         window.deleteUser = deleteUser;
-        window.handleCreateUser = handleCreateUser;
-        window.handleCreateForm = handleCreateForm;
-        window.handleLogin = handleLogin;
-        window.handleLogout = handleLogout;
-        window.openModal = openModal;
-        window.closeModal = closeModal;
-        window.exportToCSV = exportToCSV;
     </script>
 </body>
 </html>
