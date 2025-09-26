@@ -64,6 +64,7 @@
             border-radius: 50%;
             animation: floatUp 8s ease-in-out infinite;
             backdrop-filter: blur(5px);
+            will-change: transform;
         }
 
         .bubble:nth-child(1) { width: 60px; height: 60px; left: 10%; animation-delay: 0s; animation-duration: 8s; }
@@ -81,10 +82,10 @@
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(100vh) translateX(0px) rotate(0deg); opacity: 0; }
+            0% { transform: translate3d(0, 100vh, 0) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
-            100% { transform: translateY(-100px) translateX(50px) rotate(360deg); opacity: 0; }
+            100% { transform: translate3d(50px, -100px, 0) rotate(360deg); opacity: 0; }
         }
 
         /* Header */
@@ -154,22 +155,22 @@
             margin-top: 1rem;
             gap: 1rem;
             overflow-x: auto;
-            -ms-overflow-style: none; /* IE and Edge */
-            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         .nav-menu::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
         }
 
         #nav-buttons-container {
             display: flex;
-            flex-wrap: nowrap; /* Keeps tabs on one line */
+            flex-wrap: nowrap;
             gap: 1rem;
         }
 
         .nav-btn {
-            flex-shrink: 0; /* Prevents buttons from shrinking */
+            flex-shrink: 0;
             padding: 0.75rem 1.5rem;
             border: none;
             border-radius: var(--border-radius);
@@ -194,7 +195,7 @@
         }
 
         .add-tab-btn {
-            flex-shrink: 0; /* Prevents button from shrinking */
+            flex-shrink: 0;
             background: linear-gradient(135deg, var(--primary-green), var(--light-green));
             color: white;
             border-radius: 50%;
@@ -503,13 +504,32 @@
             transform: translateX(5px);
         }
 
-        /* Chart Container */
+        /* Chart Container - OPTIMIZADO */
         .chart-container {
             background: white;
             border-radius: var(--border-radius);
             padding: 2rem;
             box-shadow: var(--shadow);
             margin: 2rem 0;
+            contain: layout style paint;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            min-height: 300px;
+            contain: layout;
+        }
+
+        .chart-canvas {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
         }
 
         /* Alerts */
@@ -661,7 +681,7 @@
         /* Iframe Container */
         .iframe-container {
             width: 100%;
-            height: calc(100vh - 250px); /* Adjust height for a better fit */
+            height: calc(100vh - 250px);
             border: none;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-lg);
@@ -682,7 +702,7 @@
             }
 
             .nav-menu {
-                justify-content: flex-start; /* Align to the left on small screens */
+                justify-content: flex-start;
             }
 
             main {
@@ -695,6 +715,11 @@
 
             .logo {
                 height: 50px;
+            }
+
+            .chart-wrapper {
+                height: 250px;
+                min-height: 200px;
             }
         }
 
@@ -865,18 +890,22 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                             <div>
                                 <h4>Actividad Mensual (Simulada)</h4>
-                                <canvas id="activity-chart" width="800" height="400"></canvas>
+                                <div class="chart-wrapper">
+                                    <canvas id="activity-chart" class="chart-canvas"></canvas>
+                                </div>
                             </div>
                             <div>
                                 <h4>Formularios por Sucursal</h4>
-                                <canvas id="branch-chart" width="800" height="400"></canvas>
+                                <div class="chart-wrapper">
+                                    <canvas id="branch-chart" class="chart-canvas"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="users-section">
+            <div id="users-section" class="hidden">
                 <div class="card">
                     <h2 class="section-title">👥 Gestión de Usuarios</h2>
                     
@@ -950,7 +979,7 @@
                 </div>
             </div>
 
-            <div id="analytics-section">
+            <div id="analytics-section" class="hidden">
                 <div class="card">
                     <h2 class="section-title">📈 Analytics y Reportes</h2>
                     
@@ -978,11 +1007,15 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                             <div>
                                 <h4>Distribución por Usuario</h4>
-                                <canvas id="user-forms-chart" width="800" height="400"></canvas>
+                                <div class="chart-wrapper">
+                                    <canvas id="user-forms-chart" class="chart-canvas"></canvas>
+                                </div>
                             </div>
                             <div>
                                 <h4>Tendencia Temporal de Creación</h4>
-                                <canvas id="forms-timeline-chart" width="800" height="400"></canvas>
+                                <div class="chart-wrapper">
+                                    <canvas id="forms-timeline-chart" class="chart-canvas"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1015,7 +1048,7 @@
                 </div>
             </div>
 
-            <div id="iframe-section">
+            <div id="iframe-section" class="hidden">
                 <div class="iframe-container">
                     <iframe id="dynamic-iframe" width="100%" height="100%" frameborder="0"></iframe>
                 </div>
@@ -1082,6 +1115,7 @@
         let currentUser = null;
         let isLoggedIn = false;
         let charts = {};
+        let chartsInitialized = false; // Flag para evitar múltiples inicializaciones
 
         const ADMIN_CREDENTIALS = { username: 'admin', password: 'admin123' };
         const RECRUITMENT_CREDENTIALS = { username: 'reclutamientogn', password: 'gruponorte1234', redirectUrl: 'https://analistagn.github.io/reclutamiento-gn/' };
@@ -1231,6 +1265,11 @@
             localStorage.removeItem('gn_current_user');
             isLoggedIn = false;
             currentUser = null;
+            
+            // Limpiar gráficos antes de logout
+            destroyAllCharts();
+            chartsInitialized = false;
+            
             showLoginForm();
             if (analytics) logEvent(analytics, 'logout');
         }
@@ -1247,7 +1286,6 @@
             if (activeTab) {
                 switchTab(activeTab.id);
             } else {
-                // Fallback if no active tab is defined
                 switchTab(DEFAULT_TABS[0].id);
             }
         }
@@ -1287,6 +1325,23 @@
 
             if (selectedTab.type === 'internal') {
                 document.getElementById(id)?.classList.remove('hidden');
+                
+                // Solo inicializar gráficos cuando sea necesario y no estén ya inicializados
+                if ((id === 'dashboard-section' || id === 'analytics-section') && !chartsInitialized) {
+                    setTimeout(() => {
+                        renderCharts();
+                        if (id === 'analytics-section') {
+                            renderAnalyticsCharts();
+                        }
+                        chartsInitialized = true;
+                    }, 100);
+                } else if (id === 'analytics-section' && chartsInitialized) {
+                    // Solo actualizar datos si ya están inicializados
+                    setTimeout(() => {
+                        updateAnalyticsCharts();
+                    }, 50);
+                }
+                
                 if (id === 'users-section') updateUserStatistics();
                 if (id === 'analytics-section') updateAnalytics();
             } else if (selectedTab.type === 'external') {
@@ -1342,16 +1397,16 @@
         function updateAllDashboards() {
             updateStats();
             renderFormsTable();
-            renderCharts();
             renderUsersTable();
             updateUserStatistics();
             updateAnalytics();
+            // No inicializar gráficos aquí para evitar duplicación
         }
 
         function updateStats() {
             document.getElementById('total-users-stat').textContent = users.length;
             document.getElementById('forms-created').textContent = forms.length;
-            document.getElementById('active-sessions').textContent = Math.floor(Math.random() * 5) + 1; // Simulated
+            document.getElementById('active-sessions').textContent = Math.floor(Math.random() * 5) + 1;
         }
         
         // USER MANAGEMENT
@@ -1381,7 +1436,6 @@
             });
         }
         
-        // CORRECTION: Make deleteUser globally accessible by attaching it to the window object.
         window.deleteUser = function(id) {
             const userToDelete = users.find(user => user.id === id);
             if (userToDelete?.username === 'Admin') {
@@ -1426,7 +1480,11 @@
             saveUsers();
             updateAllDashboards();
             showAlert('create-alerts', `Usuario '${newUsername}' creado exitosamente.`, 'success');
-            document.getElementById('create-user-form')?.reset();
+            
+            // Reset form
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
         }
         
         // FORM MANAGEMENT
