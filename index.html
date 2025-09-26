@@ -75,16 +75,6 @@
         .bubble:nth-child(7) { width: 90px; height: 90px; left: 40%; animation-delay: 1.5s; animation-duration: 8.5s; }
         .bubble:nth-child(8) { width: 35px; height: 35px; left: 65%; animation-delay: 6s; animation-duration: 7.5s; }
 
-        .bubble:nth-child(2n) {
-            background: radial-gradient(circle at 30% 30%, rgba(119, 194, 92, 0.3), rgba(119, 194, 92, 0.1));
-            border-color: rgba(119, 194, 92, 0.4);
-        }
-
-        .bubble:nth-child(2n+1) {
-            background: radial-gradient(circle at 30% 30%, rgba(0, 35, 56, 0.3), rgba(0, 35, 56, 0.1));
-            border-color: rgba(0, 35, 56, 0.4);
-        }
-
         @keyframes gradientShift {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -178,33 +168,6 @@
             gap: 1rem;
         }
 
-        .tab-button-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            position: relative;
-        }
-
-        .tab-controls {
-            display: flex;
-            gap: 0.2rem;
-            margin-left: 0.5rem;
-        }
-
-        .tab-controls button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.2rem;
-            color: var(--text-light);
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .tab-controls button:hover {
-            color: var(--primary-blue);
-            transform: scale(1.1);
-        }
-
         .nav-btn {
             flex-shrink: 0; /* Prevents buttons from shrinking */
             padding: 0.75rem 1.5rem;
@@ -252,19 +215,12 @@
         }
 
         .tab-close-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
+            margin-left: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .tab-close-btn:hover {
+            color: #ffdddd;
         }
 
         /* Main Content */
@@ -421,8 +377,7 @@
             background: #dc3545;
             color: white;
         }
-
-        .btn-danger:hover {
+         .btn-danger:hover {
             background: #c82333;
             transform: translateY(-2px);
         }
@@ -589,23 +544,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Loading Spinner */
-        .spinner {
-            border: 3px solid rgba(0, 35, 56, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid var(--primary-blue);
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-right: 0.5rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -627,6 +565,23 @@
             border-bottom: 2px solid var(--primary-green);
         }
 
+        /* Analytics Stats */
+        .analytics-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .analytics-stat-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border-left: 4px solid var(--primary-green);
+            box-shadow: var(--shadow);
+        }
+        
         /* Footer */
         footer {
             background: rgba(255, 255, 255, 0.95);
@@ -734,11 +689,7 @@
                 padding: 1rem;
             }
 
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .dashboard-links {
+            .dashboard-grid, .analytics-stats, .dashboard-links {
                 grid-template-columns: 1fr;
             }
 
@@ -820,8 +771,8 @@
             </div>
         </div>
 
-        <div id="section-container">
-            <div id="dashboard-section" class="hidden">
+        <div id="section-container" class="hidden">
+            <div id="dashboard-section">
                 <div class="card">
                     <h2 class="section-title">📊 Dashboard de Operaciones</h2>
                     
@@ -837,22 +788,6 @@
                         <div class="stat-card" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
                             <div class="stat-number" id="active-sessions">0</div>
                             <div class="stat-label">🔥 Sesiones Activas</div>
-                        </div>
-                    </div>
-
-                    <h3 class="section-title">📈 Métricas Clave de Negocio (KPIs)</h3>
-                    <div class="dashboard-grid">
-                        <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                            <div class="stat-number" id="completion-rate">87%</div>
-                            <div class="stat-label">✅ Tasa de Finalización de Formularios</div>
-                        </div>
-                        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                            <div class="stat-number" id="avg-response-time">1.2 h</div>
-                            <div class="stat-label">⏳ Tiempo Promedio de Respuesta</div>
-                        </div>
-                        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
-                            <div class="stat-number" id="project-roi">+15%</div>
-                            <div class="stat-label">💰 ROI de Proyectos Finalizados</div>
                         </div>
                     </div>
 
@@ -929,7 +864,7 @@
                         <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📈 Actividad del Sistema</h3>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                             <div>
-                                <h4>Actividad Mensual</h4>
+                                <h4>Actividad Mensual (Simulada)</h4>
                                 <canvas id="activity-chart" width="800" height="400"></canvas>
                             </div>
                             <div>
@@ -938,30 +873,28 @@
                             </div>
                         </div>
                     </div>
-
-                    <h3 class="section-title">🔗 Dashboards de Business Intelligence</h3>
-                    <div class="dashboard-links">
-                        <div class="dashboard-link-card">
-                            <h4>📊 Dashboard Grupo Norte (Power BI)</h4>
-                            <p>Análisis completo de datos corporativos, métricas de rendimiento y KPIs principales de la organización.</p>
-                            <a href="https://analistagn.github.io/dashboard-grupo-norte/" target="_blank" class="dashboard-link">
-                                Acceder al Dashboard →
-                            </a>
-                        </div>
-                        <div class="dashboard-link-card">
-                            <h4>📈 Dashboard GN-E (Looker Studio)</h4>
-                            <p>Reportes especializados y visualizaciones avanzadas para el seguimiento de proyectos y operaciones.</p>
-                            <a href="https://analistagn.github.io/dashboard-gn-e/" target="_blank" class="dashboard-link">
-                                Acceder al Dashboard →
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
 
-            <div id="users-section" class="hidden">
+            <div id="users-section">
                 <div class="card">
                     <h2 class="section-title">👥 Gestión de Usuarios</h2>
+                    
+                    <div class="dashboard-grid">
+                        <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                            <div class="stat-number" id="total-registered-users">0</div>
+                            <div class="stat-label">👥 Total de Usuarios</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            <div class="stat-number" id="users-this-month">0</div>
+                            <div class="stat-label">🆕 Usuarios este mes</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                            <div class="stat-number" id="avg-user-forms">0</div>
+                            <div class="stat-label">📊 Promedio formularios/usuario</div>
+                        </div>
+                    </div>
+
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
                         <h3 style="color: var(--primary-blue);">📋 Lista de Usuarios</h3>
                         <div style="display: flex; gap: 1rem; align-items: center;">
@@ -978,6 +911,7 @@
                                     <th>ID</th>
                                     <th>Usuario</th>
                                     <th>Fecha de Creación</th>
+                                    <th>Formularios Creados</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -1016,24 +950,72 @@
                 </div>
             </div>
 
-            <div id="analytics-section" class="hidden">
+            <div id="analytics-section">
                 <div class="card">
                     <h2 class="section-title">📈 Analytics y Reportes</h2>
-                    <div class="alert alert-info">
-                        <strong>🔥 Integración con Firebase Analytics:</strong> Los datos de uso se están recopilando automáticamente y estarán disponibles en el dashboard de Firebase Console para un análisis más profundo.
-                    </div>
-                    <div class="chart-container">
-                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📊 Métricas de Rendimiento</h3>
-                        <div style="text-align: center; padding: 3rem; color: var(--text-light);">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
-                            <p>Gráficos de analytics avanzados se mostrarían aquí</p>
-                            <small>Dashboard de analítica en tiempo real (requiere backend)</small>
+                    
+                    <div class="analytics-stats">
+                        <div class="analytics-stat-card">
+                            <h4 style="color: var(--primary-blue); margin-bottom: 0.5rem;">📊 Total de Formularios</h4>
+                            <div class="stat-number" style="color: var(--primary-green); font-size: 2rem;" id="analytics-total-forms">0</div>
+                        </div>
+                        <div class="analytics-stat-card">
+                            <h4 style="color: var(--primary-blue); margin-bottom: 0.5rem;">📅 Formularios Hoy</h4>
+                            <div class="stat-number" style="color: var(--primary-green); font-size: 2rem;" id="analytics-forms-today">0</div>
+                        </div>
+                        <div class="analytics-stat-card">
+                            <h4 style="color: var(--primary-blue); margin-bottom: 0.5rem;">📈 Esta Semana</h4>
+                            <div class="stat-number" style="color: var(--primary-green); font-size: 2rem;" id="analytics-forms-week">0</div>
+                        </div>
+                        <div class="analytics-stat-card">
+                            <h4 style="color: var(--primary-blue); margin-bottom: 0.5rem;">🏢 Sucursal Más Activa</h4>
+                            <div class="stat-number" style="color: var(--primary-blue); font-size: 1.5rem; font-weight: 600;" id="analytics-top-branch">-</div>
                         </div>
                     </div>
+
+                    <div class="chart-container">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📊 Formularios por Usuario</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div>
+                                <h4>Distribución por Usuario</h4>
+                                <canvas id="user-forms-chart" width="800" height="400"></canvas>
+                            </div>
+                            <div>
+                                <h4>Tendencia Temporal de Creación</h4>
+                                <canvas id="forms-timeline-chart" width="800" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📋 Formularios Realizados por Usuarios</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Usuario Creador</th>
+                                    <th>Formulario</th>
+                                    <th>Sucursal</th>
+                                    <th>Fecha de Creación</th>
+                                    <th>Receptor</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-forms-table"></tbody>
+                        </table>
+                        <div id="analytics-empty-state" class="empty-state hidden">
+                            <div class="empty-icon">📊</div>
+                            <p>No hay formularios para mostrar</p>
+                            <small>Los formularios aparecerán aquí cuando los usuarios los creen</small>
+                        </div>
+                    </div>
+                    
+                    <button id="export-analytics-btn" class="btn btn-primary mt-2">
+                        📊 Exportar Analytics (CSV)
+                    </button>
                 </div>
             </div>
 
-            <div id="iframe-section" class="hidden">
+            <div id="iframe-section">
                 <div class="iframe-container">
                     <iframe id="dynamic-iframe" width="100%" height="100%" frameborder="0"></iframe>
                 </div>
@@ -1068,7 +1050,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2025 Grupo Norte. Todos los derechos reservados. | Panel de Mando Estratégico v4.0</p>
+        <p>&copy; 2025 Grupo Norte. Todos los derechos reservados. | Panel de Mando Estratégico v4.2</p>
     </footer>
 
     <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
@@ -1076,7 +1058,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script type="module">
-        // Configuración de Firebase (requiere un proyecto de Firebase)
+        // Firebase Configuration
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
@@ -1084,7 +1066,7 @@
             apiKey: "AIzaSyBfRmfCBc8wRNpSKRq2155I62ZLGPDj8kw",
             authDomain: "aplicaciongn.firebaseapp.com",
             projectId: "aplicaciongn",
-            storageBucket: "aplicaciongn.firebasestorage.app",
+            storageBucket: "aplicaciongn.appspot.com",
             messagingSenderId: "852086423311",
             appId: "1:852086423311:web:7df98a23ec95efbabf087a",
             measurementId: "G-NG1S0PNJ0L"
@@ -1093,7 +1075,7 @@
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
 
-        // Variables globales para la aplicación
+        // Global Application Variables
         let users = JSON.parse(localStorage.getItem('gn_users') || '[]');
         let forms = JSON.parse(localStorage.getItem('gn_forms') || '[]');
         let tabs = JSON.parse(localStorage.getItem('gn_tabs') || '[]');
@@ -1101,20 +1083,17 @@
         let isLoggedIn = false;
         let charts = {};
 
-        // NOTA DE SEGURIDAD: En una aplicación real, las credenciales nunca se almacenarían así.
-        // Se usaría un sistema de autenticación seguro en el lado del servidor.
         const ADMIN_CREDENTIALS = { username: 'admin', password: 'admin123' };
         const RECRUITMENT_CREDENTIALS = { username: 'reclutamientogn', password: 'gruponorte1234', redirectUrl: 'https://analistagn.github.io/reclutamiento-gn/' };
 
-        // Definir pestañas por defecto
         const DEFAULT_TABS = [
             { id: 'dashboard-section', name: 'Dashboard', type: 'internal', active: true, deletable: false },
-            { id: 'users-section', name: 'Gestión de Usuarios', type: 'internal', active: false, deletable: false },
+            { id: 'users-section', name: 'Usuarios', type: 'internal', active: false, deletable: false },
             { id: 'analytics-section', name: 'Analytics', type: 'internal', active: false, deletable: false },
             { id: 'fieldbeat-tab', name: 'Fieldbeat', url: 'https://teams.fieldbeat.com/web/#/login', type: 'external', active: false, deletable: true }
         ];
 
-        // Referencias a elementos del DOM
+        // DOM Element References
         const loginSection = document.getElementById('login-section');
         const sectionContainer = document.getElementById('section-container');
         const navMenu = document.getElementById('nav-menu');
@@ -1122,14 +1101,13 @@
         const navButtonsContainer = document.getElementById('nav-buttons-container');
         const addTabBtn = document.getElementById('add-tab-btn');
         const tabModal = document.getElementById('tab-modal');
-        const tabModalTitle = document.getElementById('tab-modal-title');
         const tabForm = document.getElementById('tab-form');
-        const tabIdInput = document.getElementById('tab-id');
         const tabNameInput = document.getElementById('tab-name');
         const tabUrlInput = document.getElementById('tab-url');
 
-        // Inicialización de la aplicación
-        document.addEventListener('DOMContentLoaded', function() {
+        // --- CORE APP LOGIC ---
+
+        document.addEventListener('DOMContentLoaded', () => {
             initApp();
             setupEventListeners();
         });
@@ -1144,46 +1122,37 @@
                 showLoginForm();
             }
             if (analytics) {
-                logEvent(analytics, 'app_initialized', { timestamp: new Date().toISOString() });
+                logEvent(analytics, 'app_initialized');
             }
         }
 
-        // Configurar todos los manejadores de eventos
         function setupEventListeners() {
             document.getElementById('login-btn').addEventListener('click', handleLogin);
-            document.getElementById('username').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') handleLogin();
-            });
-            document.getElementById('password').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') handleLogin();
-            });
-
+            document.getElementById('username').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
+            document.getElementById('password').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
             addTabBtn.addEventListener('click', openAddTabModal);
             tabForm.addEventListener('submit', handleSaveTab);
-
             document.getElementById('create-form-btn').addEventListener('click', handleCreateForm);
             document.getElementById('create-user-btn').addEventListener('click', handleCreateUser);
-
-            document.getElementById('export-users-btn').addEventListener('click', () => exportDataToCsv(users, 'usuarios'));
+            document.getElementById('export-users-btn').addEventListener('click', () => exportDataToCsv(users.map(u => ({...u, password: '***', formsCreated: forms.filter(f => f.createdBy === u.username).length})), 'usuarios'));
             document.getElementById('export-forms-btn').addEventListener('click', () => exportDataToCsv(forms, 'formularios'));
-            
+            document.getElementById('export-analytics-btn').addEventListener('click', () => exportDataToCsv(forms, 'analytics_formularios'));
             document.getElementById('user-search').addEventListener('keyup', (e) => filterUsers(e.target.value));
-
             document.getElementById('modal-close-btn').addEventListener('click', () => closeModal('tab-modal'));
             document.getElementById('modal-cancel-btn').addEventListener('click', () => closeModal('tab-modal'));
         }
 
-        // Manejo de la interfaz de usuario
+        // --- UI MANAGEMENT ---
+
         function showMainInterface() {
             loginSection.classList.add('hidden');
             sectionContainer.classList.remove('hidden');
             navMenu.classList.remove('hidden');
             userInfo.classList.remove('hidden');
             document.getElementById('current-user').textContent = currentUser.username;
-            document.querySelector('header .header-content').style.justifyContent = 'space-between';
             renderHeaderWithLogout();
             loadTabs();
-            updateDashboard();
+            updateAllDashboards();
         }
 
         function showLoginForm() {
@@ -1192,9 +1161,7 @@
             navMenu.classList.add('hidden');
             userInfo.classList.add('hidden');
             const logoutNav = document.getElementById('logout-nav');
-            if (logoutNav) {
-                logoutNav.remove();
-            }
+            if (logoutNav) logoutNav.remove();
         }
 
         function renderHeaderWithLogout() {
@@ -1204,9 +1171,9 @@
                 logoutNav = document.createElement('nav');
                 logoutNav.id = 'logout-nav';
                 logoutNav.className = 'user-info';
-                logoutNav.innerHTML = `<a href="#" class="btn btn-secondary">🚪 Cerrar Sesión</a>`;
+                logoutNav.innerHTML = `<a href="#" id="logout-btn" class="btn btn-secondary">Cerrar Sesión</a>`;
                 headerContent.appendChild(logoutNav);
-                logoutNav.addEventListener('click', (e) => {
+                document.getElementById('logout-btn').addEventListener('click', (e) => {
                     e.preventDefault();
                     handleLogout();
                 });
@@ -1216,64 +1183,44 @@
         function showAlert(containerId, message, type, duration = 5000) {
             const container = document.getElementById(containerId);
             if (!container) return;
-
             const alertDiv = document.createElement('div');
             alertDiv.className = `alert alert-${type}`;
-            alertDiv.innerHTML = message;
+            alertDiv.textContent = message;
+            container.innerHTML = ''; 
             container.appendChild(alertDiv);
-
-            setTimeout(() => {
-                alertDiv.remove();
-            }, duration);
+            setTimeout(() => { alertDiv.remove(); }, duration);
         }
 
-        function showModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.classList.add('show');
-            }
-        }
+        function showModal(id) { document.getElementById(id)?.classList.add('show'); }
+        function closeModal(id) { document.getElementById(id)?.classList.remove('show'); }
 
-        function closeModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.classList.remove('show');
-            }
-        }
+        // --- AUTHENTICATION ---
 
-        // Lógica de autenticación
         function handleLogin() {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
-            const loginAlerts = document.getElementById('login-alerts');
             let userFound = false;
 
-            // Verificar credenciales estáticas
-            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-                currentUser = { username: 'Admin', role: 'admin', loginTime: new Date() };
-                isLoggedIn = true;
+            if (username.toLowerCase() === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                currentUser = { id: 'admin-001', username: 'Admin', role: 'admin', createdAt: new Date().toISOString() };
                 userFound = true;
             } else if (username === RECRUITMENT_CREDENTIALS.username && password === RECRUITMENT_CREDENTIALS.password) {
                 window.location.href = RECRUITMENT_CREDENTIALS.redirectUrl;
                 return;
             } else {
-                // Buscar en el almacenamiento local
-                const foundUser = users.find(u => u.username === username && u.password === password);
+                const foundUser = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
                 if (foundUser) {
-                    currentUser = { ...foundUser, loginTime: new Date() };
-                    isLoggedIn = true;
+                    currentUser = { ...foundUser, role: 'user' };
                     userFound = true;
                 }
             }
 
             if (userFound) {
+                isLoggedIn = true;
                 localStorage.setItem('gn_session', 'true');
                 localStorage.setItem('gn_current_user', JSON.stringify(currentUser));
                 showMainInterface();
-                showAlert('header-alerts', `¡Bienvenido, ${currentUser.username}!`, 'success', 3000);
-                if (analytics) {
-                    logEvent(analytics, 'login', { user_role: currentUser.role || 'user' });
-                }
+                if (analytics) logEvent(analytics, 'login', { user_role: currentUser.role });
             } else {
                 showAlert('login-alerts', 'Usuario o contraseña incorrectos.', 'error');
             }
@@ -1285,23 +1232,23 @@
             isLoggedIn = false;
             currentUser = null;
             showLoginForm();
-            showAlert('login-alerts', 'Has cerrado sesión exitosamente.', 'info', 3000);
-            if (analytics) {
-                logEvent(analytics, 'logout');
-            }
+            if (analytics) logEvent(analytics, 'logout');
         }
+        
+        // --- TAB MANAGEMENT ---
 
-        // Lógica de gestión de pestañas
         function loadTabs() {
             if (tabs.length === 0) {
-                tabs = DEFAULT_TABS;
+                tabs = [...DEFAULT_TABS];
                 saveTabs();
             }
             renderTabs();
-            // Asegurar que la pestaña activa al cargar es la correcta
             const activeTab = tabs.find(tab => tab.active) || tabs[0];
             if (activeTab) {
-                switchTab(activeTab.id, activeTab.url, activeTab.type);
+                switchTab(activeTab.id);
+            } else {
+                // Fallback if no active tab is defined
+                switchTab(DEFAULT_TABS[0].id);
             }
         }
 
@@ -1310,61 +1257,45 @@
             tabs.forEach(tab => {
                 const btn = document.createElement('button');
                 btn.className = `nav-btn ${tab.active ? 'active' : ''}`;
-                btn.id = tab.id;
+                btn.dataset.id = tab.id;
                 btn.textContent = tab.name;
-                btn.onclick = () => switchTab(tab.id, tab.url, tab.type);
-
-                // Agregar botón de cierre solo para pestañas que pueden ser eliminadas
+                
                 if (tab.deletable) {
                     const closeBtn = document.createElement('span');
                     closeBtn.innerHTML = '&times;';
                     closeBtn.className = 'tab-close-btn';
-                    closeBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        deleteTab(tab.id);
-                    };
+                    closeBtn.onclick = (e) => { e.stopPropagation(); deleteTab(tab.id); };
                     btn.appendChild(closeBtn);
                 }
-                
                 navButtonsContainer.appendChild(btn);
             });
+            // Add event listeners after rendering
+            navButtonsContainer.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchTab(btn.dataset.id));
+            });
         }
 
-        function switchTab(id, url, type) {
-            tabs.forEach(tab => {
-                tab.active = (tab.id === id);
-            });
+        function switchTab(id) {
+            const selectedTab = tabs.find(t => t.id === id);
+            if (!selectedTab) return;
+
+            tabs.forEach(tab => tab.active = (tab.id === id));
             saveTabs();
-            renderTabs();
+            renderTabs(); // Re-render to show active state
             
-            document.querySelectorAll('#section-container > div').forEach(section => {
-                section.classList.add('hidden');
-            });
+            document.querySelectorAll('#section-container > div').forEach(section => section.classList.add('hidden'));
 
-            if (type === 'internal') {
-                const section = document.getElementById(id);
-                if (section) {
-                    section.classList.remove('hidden');
-                }
-            } else if (type === 'external') {
+            if (selectedTab.type === 'internal') {
+                document.getElementById(id)?.classList.remove('hidden');
+                if (id === 'users-section') updateUserStatistics();
+                if (id === 'analytics-section') updateAnalytics();
+            } else if (selectedTab.type === 'external') {
                 const iframeSection = document.getElementById('iframe-section');
-                const iframe = document.getElementById('dynamic-iframe');
-                iframe.src = url;
-                iframeSection.classList.remove('hidden');
+                document.getElementById('dynamic-iframe').src = selectedTab.url;
+                iframeSection?.classList.remove('hidden');
             }
             
-            if (analytics) {
-                logEvent(analytics, 'tab_switched', { tab_id: id, tab_type: type });
-            }
-        }
-
-        function openAddTabModal() {
-            tabModalTitle.textContent = 'Agregar Nueva Pestaña';
-            tabIdInput.value = '';
-            tabNameInput.value = '';
-            tabUrlInput.value = '';
-            document.getElementById('tab-modal-alerts').innerHTML = '';
-            showModal('tab-modal');
+            if (analytics) logEvent(analytics, 'tab_switched', { tab_id: id });
         }
 
         function handleSaveTab(event) {
@@ -1373,103 +1304,108 @@
             const tabUrl = tabUrlInput.value.trim();
 
             if (!tabName || !tabUrl) {
-                showAlert('tab-modal-alerts', 'El nombre y la URL de la pestaña son obligatorios.', 'error');
-                return;
+                showAlert('tab-modal-alerts', 'El nombre y la URL son obligatorios.', 'error'); return;
             }
 
-            const newTab = {
-                id: generateId(),
-                name: tabName,
-                url: tabUrl,
-                type: 'external',
-                active: false,
-                deletable: true
-            };
-            
+            const newTab = { id: generateId(), name: tabName, url: tabUrl, type: 'external', active: false, deletable: true };
             tabs.push(newTab);
             saveTabs();
             renderTabs();
             closeModal('tab-modal');
-            
-            showAlert('header-alerts', 'Pestaña agregada exitosamente.', 'success', 3000);
-            
-            if (analytics) {
-                logEvent(analytics, 'tab_added', { tab_name: tabName });
-            }
+            if (analytics) logEvent(analytics, 'tab_added', { tab_name: tabName });
         }
 
         function deleteTab(id) {
-            if (confirm('¿Estás seguro de que quieres eliminar esta pestaña?')) {
-                const tabToDelete = tabs.find(tab => tab.id === id);
-                if (!tabToDelete || !tabToDelete.deletable) {
-                    showAlert('header-alerts', 'No se puede eliminar esta pestaña.', 'error');
-                    return;
-                }
-
+            const tabToDelete = tabs.find(tab => tab.id === id);
+            if (!tabToDelete?.deletable) { alert('No se puede eliminar esta pestaña.'); return; }
+            
+            if (confirm(`¿Estás seguro de que quieres eliminar la pestaña "${tabToDelete.name}"?`)) {
                 const wasActive = tabToDelete.active;
                 tabs = tabs.filter(tab => tab.id !== id);
-                saveTabs();
-                renderTabs();
-                
-                showAlert('header-alerts', 'Pestaña eliminada.', 'info', 3000);
-                
                 if (wasActive) {
-                    const defaultTab = tabs.find(tab => tab.id === 'dashboard-section') || tabs[0];
-                    if (defaultTab) {
-                        switchTab(defaultTab.id, defaultTab.url, defaultTab.type);
-                    }
+                    tabs[0].active = true;
                 }
-                if (analytics) {
-                    logEvent(analytics, 'tab_deleted', { tab_id: id });
-                }
+                saveTabs();
+                loadTabs();
+                if (analytics) logEvent(analytics, 'tab_deleted', { tab_id: id });
             }
         }
+        
+        function openAddTabModal() {
+            tabForm.reset();
+            document.getElementById('tab-modal-alerts').innerHTML = '';
+            showModal('tab-modal');
+        }
 
-        // Lógica del Dashboard y datos
-        function updateDashboard() {
+        // --- DATA & DASHBOARD LOGIC ---
+
+        function updateAllDashboards() {
             updateStats();
-            renderUsersTable();
             renderFormsTable();
             renderCharts();
+            renderUsersTable();
+            updateUserStatistics();
+            updateAnalytics();
         }
 
         function updateStats() {
             document.getElementById('total-users-stat').textContent = users.length;
             document.getElementById('forms-created').textContent = forms.length;
-            document.getElementById('active-sessions').textContent = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('active-sessions').textContent = Math.floor(Math.random() * 5) + 1; // Simulated
         }
-
+        
+        // USER MANAGEMENT
         function renderUsersTable(filteredUsers = users) {
             const tableBody = document.getElementById('users-table-body');
-            if (!tableBody) return;
             tableBody.innerHTML = '';
-            
-            if (filteredUsers.length === 0) {
-                document.getElementById('users-empty-state').classList.remove('hidden');
-                return;
-            }
-            document.getElementById('users-empty-state').classList.add('hidden');
+            document.getElementById('users-empty-state').classList.toggle('hidden', filteredUsers.length > 0);
 
             filteredUsers.forEach(user => {
                 const row = document.createElement('tr');
-                const isDeletable = user.username !== 'admin';
+                const isDeletable = user.username !== 'Admin';
+                const formCount = forms.filter(f => f.createdBy === user.username).length;
                 row.innerHTML = `
                     <td>${user.id.substring(0, 6)}...</td>
                     <td>${user.username}</td>
                     <td>${formatDate(user.createdAt)}</td>
+                    <td>${formCount}</td>
                     <td>
-                        ${isDeletable ? `<button class="btn btn-danger btn-sm" onclick="deleteUser('${user.id}')">Eliminar</button>` : 'N/A'}
+                        ${isDeletable ? `<button class="btn btn-danger btn-sm" data-id="${user.id}">Eliminar</button>` : 'N/A'}
                     </td>
                 `;
                 tableBody.appendChild(row);
             });
+            // Add event listeners for delete buttons
+            tableBody.querySelectorAll('.btn-danger').forEach(button => {
+                button.addEventListener('click', (e) => deleteUser(e.target.dataset.id));
+            });
+        }
+        
+        // CORRECTION: Make deleteUser globally accessible by attaching it to the window object.
+        window.deleteUser = function(id) {
+            const userToDelete = users.find(user => user.id === id);
+            if (userToDelete?.username === 'Admin') {
+                alert('No se puede eliminar al usuario administrador.');
+                return;
+            }
+            if (confirm(`¿Estás seguro de que quieres eliminar al usuario "${userToDelete.username}"?`)) {
+                users = users.filter(user => user.id !== id);
+                saveUsers();
+                updateAllDashboards();
+            }
+        }
+
+        function updateUserStatistics() {
+            const usersThisMonth = users.filter(u => new Date(u.createdAt).getMonth() === new Date().getMonth()).length;
+            const avgForms = users.length > 0 ? (forms.length / users.length).toFixed(1) : 0;
+            document.getElementById('total-registered-users').textContent = users.length;
+            document.getElementById('users-this-month').textContent = usersThisMonth;
+            document.getElementById('avg-user-forms').textContent = avgForms;
         }
 
         function filterUsers(searchTerm) {
-            const filtered = users.filter(user => 
-                user.username.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                user.id.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            const lowerCaseSearch = searchTerm.toLowerCase();
+            const filtered = users.filter(user => user.username.toLowerCase().includes(lowerCaseSearch));
             renderUsersTable(filtered);
         }
 
@@ -1477,74 +1413,32 @@
             const newUsername = document.getElementById('new-username').value.trim();
             const newPassword = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-            const createAlerts = document.getElementById('create-alerts');
 
-            if (!newUsername || !newPassword || !confirmPassword) {
-                showAlert('create-alerts', 'Todos los campos son obligatorios.', 'error');
-                return;
-            }
-            if (newPassword !== confirmPassword) {
-                showAlert('create-alerts', 'Las contraseñas no coinciden.', 'error');
-                return;
-            }
-            if (newPassword.length < 6) {
-                showAlert('create-alerts', 'La contraseña debe tener al menos 6 caracteres.', 'error');
-                return;
-            }
-            if (users.some(u => u.username === newUsername)) {
-                showAlert('create-alerts', 'El nombre de usuario ya existe.', 'error');
-                return;
+            if (!newUsername || !newPassword) { showAlert('create-alerts', 'El usuario y la contraseña son obligatorios.', 'error'); return; }
+            if (newPassword !== confirmPassword) { showAlert('create-alerts', 'Las contraseñas no coinciden.', 'error'); return; }
+            if (newPassword.length < 6) { showAlert('create-alerts', 'La contraseña debe tener al menos 6 caracteres.', 'error'); return; }
+            if (users.some(u => u.username.toLowerCase() === newUsername.toLowerCase()) || newUsername.toLowerCase() === 'admin') {
+                showAlert('create-alerts', 'El nombre de usuario ya existe.', 'error'); return;
             }
 
-            const newUser = {
-                id: generateId(),
-                username: newUsername,
-                password: newPassword, // En una aplicación real, la contraseña NUNCA se almacenaría en texto plano.
-                createdAt: new Date().toISOString()
-            };
+            const newUser = { id: generateId(), username: newUsername, password: newPassword, createdAt: new Date().toISOString() };
             users.push(newUser);
             saveUsers();
-            updateDashboard();
+            updateAllDashboards();
             showAlert('create-alerts', `Usuario '${newUsername}' creado exitosamente.`, 'success');
-            document.getElementById('new-username').value = '';
-            document.getElementById('new-password').value = '';
-            document.getElementById('confirm-password').value = '';
+            document.getElementById('create-user-form')?.reset();
         }
-
-        function deleteUser(id) {
-            const userToDelete = users.find(user => user.id === id);
-            if (userToDelete && userToDelete.username === 'admin') {
-                showAlert('users-section', 'No se puede eliminar el usuario administrador.', 'error');
-                return;
-            }
-
-            if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
-                users = users.filter(user => user.id !== id);
-                saveUsers();
-                updateDashboard();
-                showAlert('users-section', 'Usuario eliminado.', 'info', 3000);
-            }
-        }
-
+        
+        // FORM MANAGEMENT
         function renderFormsTable() {
             const tableBody = document.getElementById('forms-table-body');
-            if (!tableBody) return;
             tableBody.innerHTML = '';
-            if (forms.length === 0) {
-                document.getElementById('forms-empty-state').classList.remove('hidden');
-                return;
-            }
-            document.getElementById('forms-empty-state').classList.add('hidden');
+            const recentForms = [...forms].reverse().slice(0, 10);
+            document.getElementById('forms-empty-state').classList.toggle('hidden', recentForms.length > 0);
 
-            forms.forEach(form => {
+            recentForms.forEach(form => {
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${form.name}</td>
-                    <td>${form.branch}</td>
-                    <td>${form.receiver}</td>
-                    <td>${formatDate(form.date)}</td>
-                    <td>${form.status}</td>
-                `;
+                row.innerHTML = `<td>${form.name}</td><td>${form.branch}</td><td>${form.receiver}</td><td>${formatDate(form.date)}</td><td>${form.status}</td>`;
                 tableBody.appendChild(row);
             });
         }
@@ -1554,183 +1448,113 @@
             const formSchedule = document.getElementById('form-schedule').value.trim();
             const formBranch = document.getElementById('form-branch').value;
             const formReceiver = document.getElementById('form-receiver').value.trim();
-            const formDescription = document.getElementById('form-description').value.trim();
-
+            
             if (!formName || !formSchedule || !formBranch || !formReceiver) {
-                showAlert('form-alerts', 'Todos los campos marcados con * son obligatorios.', 'error');
-                return;
+                showAlert('form-alerts', 'Todos los campos marcados con * son obligatorios.', 'error'); return;
             }
 
-            const newForm = {
-                id: generateId(),
-                name: formName,
-                schedule: formSchedule,
-                branch: formBranch,
-                receiver: formReceiver,
-                description: formDescription,
-                date: new Date().toISOString(),
-                status: 'Pendiente'
-            };
-
-            forms.push(newForm);
+            const newForm = { id: generateId(), name: formName, schedule: formSchedule, branch: formBranch, receiver: formReceiver, description: document.getElementById('form-description').value.trim(), date: new Date().toISOString(), status: 'Pendiente', createdBy: currentUser.username };
+            forms.unshift(newForm); // Add to the beginning of the array
             saveForms();
-            updateDashboard();
-            showAlert('form-alerts', `Formulario '${formName}' creado exitosamente.`, 'success');
-            document.getElementById('form-name').value = '';
-            document.getElementById('form-schedule').value = '';
-            document.getElementById('form-branch').value = '';
-            document.getElementById('form-receiver').value = '';
-            document.getElementById('form-description').value = '';
-            if (analytics) {
-                logEvent(analytics, 'form_created', { form_name: formName, form_branch: formBranch });
-            }
+            updateAllDashboards();
+            showAlert('form-alerts', `Formulario '${formName}' creado.`, 'success');
+            document.getElementById('create-form')?.reset();
+            if (analytics) logEvent(analytics, 'form_created', { form_name: formName, form_branch: formBranch });
         }
 
-        // Lógica de datos y utilidades
-        function saveUsers() {
-            localStorage.setItem('gn_users', JSON.stringify(users));
+        // ANALYTICS
+        function updateAnalytics() {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            const oneWeekAgo = today - 6 * 24 * 60 * 60 * 1000;
+            const formsToday = forms.filter(f => new Date(f.date).setHours(0,0,0,0) === today).length;
+            const formsThisWeek = forms.filter(f => new Date(f.date).getTime() >= oneWeekAgo).length;
+            const branchCounts = forms.reduce((acc, form) => { acc[form.branch] = (acc[form.branch] || 0) + 1; return acc; }, {});
+            const topBranch = Object.keys(branchCounts).length > 0 ? Object.entries(branchCounts).sort((a,b) => b[1] - a[1])[0][0] : '-';
+
+            document.getElementById('analytics-total-forms').textContent = forms.length;
+            document.getElementById('analytics-forms-today').textContent = formsToday;
+            document.getElementById('analytics-forms-week').textContent = formsThisWeek;
+            document.getElementById('analytics-top-branch').textContent = topBranch;
+            renderAnalyticsTable();
+            renderAnalyticsCharts();
         }
 
-        function saveForms() {
-            localStorage.setItem('gn_forms', JSON.stringify(forms));
-        }
+        function renderAnalyticsTable() {
+            const tableBody = document.getElementById('analytics-forms-table');
+            tableBody.innerHTML = '';
+            document.getElementById('analytics-empty-state').classList.toggle('hidden', forms.length > 0);
 
-        function saveTabs() {
-            localStorage.setItem('gn_tabs', JSON.stringify(tabs));
-        }
-
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        }
-
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('es-ES', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
+            forms.forEach(form => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${form.createdBy || 'N/A'}</td><td>${form.name}</td><td>${form.branch}</td><td>${formatDate(form.date)}</td><td>${form.receiver}</td><td>${form.status}</td>`;
+                tableBody.appendChild(row);
             });
         }
 
+        // --- UTILITIES & DATA PERSISTENCE ---
+
+        function saveUsers() { localStorage.setItem('gn_users', JSON.stringify(users)); }
+        function saveForms() { localStorage.setItem('gn_forms', JSON.stringify(forms)); }
+        function saveTabs() { localStorage.setItem('gn_tabs', JSON.stringify(tabs)); }
+        function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2, 9); }
+        function formatDate(dateString) { return new Date(dateString).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+        
         function exportDataToCsv(data, filename) {
-            if (data.length === 0) {
-                alert('No hay datos para exportar.');
-                return;
-            }
-
+            if (data.length === 0) { alert('No hay datos para exportar.'); return; }
             const headers = Object.keys(data[0]);
-            const csvContent = "data:text/csv;charset=utf-8," 
-                               + headers.join(',') + '\n'
-                               + data.map(row => headers.map(header => JSON.stringify(row[header])).join(',')).join('\n');
-
-            const encodedUri = encodeURI(csvContent);
+            const csvRows = [headers.join(',')];
+            data.forEach(row => {
+                const values = headers.map(header => JSON.stringify(row[header] || ''));
+                csvRows.push(values.join(','));
+            });
+            const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `${filename}-${formatDateForFile(new Date())}.csv`);
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `${filename}-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            if (analytics) {
-                logEvent(analytics, 'data_exported', { dataset: filename });
-            }
+            if (analytics) logEvent(analytics, 'data_exported', { dataset: filename });
         }
 
-        function formatDateForFile(date) {
-            return date.toISOString().split('T')[0];
-        }
+        // --- CHARTS ---
 
-        // Lógica de los gráficos con Chart.js
         function renderCharts() {
-            const style = getComputedStyle(document.body);
-            const primaryBlue = style.getPropertyValue('--primary-blue');
-            const primaryGreen = style.getPropertyValue('--primary-green');
+            const primaryBlue = '#002338', primaryGreen = '#77c25c';
+            // Activity Chart (Simulated Data)
+            if (charts.activityChart) charts.activityChart.destroy();
+            charts.activityChart = new Chart(document.getElementById('activity-chart'), { type: 'line', data: { labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul'], datasets: [ { label: 'Logins', data: [15, 20, 30, 45, 40, 50, 60], borderColor: primaryBlue, tension: 0.4 }, { label: 'Formularios', data: [5, 8, 12, 10, 15, 18, 25], borderColor: primaryGreen, tension: 0.4 } ] }, options: { responsive: true, maintainAspectRatio: false } });
+            
+            // Branch Chart (Live Data)
+            const branchCounts = forms.reduce((acc, { branch }) => { acc[branch] = (acc[branch] || 0) + 1; return acc; }, {});
+            if (charts.branchChart) charts.branchChart.destroy();
+            charts.branchChart = new Chart(document.getElementById('branch-chart'), { type: 'bar', data: { labels: Object.keys(branchCounts), datasets: [{ label: 'Formularios', data: Object.values(branchCounts), backgroundColor: ['#002338', '#77c25c', '#004b66', '#a3d47a', '#ff6b6b'] }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } });
+        }
 
-            // Gráfico de Actividad Mensual
-            const activityChartCtx = document.getElementById('activity-chart');
-            if (charts.activityChart) {
-                charts.activityChart.destroy();
-            }
-            const activityData = {
-                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul'],
-                datasets: [
-                    {
-                        label: 'Logins',
-                        data: [15, 20, 30, 45, 40, 50, 60],
-                        borderColor: primaryBlue,
-                        backgroundColor: 'rgba(0, 35, 56, 0.2)',
-                        fill: false,
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Formularios Creados',
-                        data: [5, 8, 12, 10, 15, 18, 25],
-                        borderColor: primaryGreen,
-                        backgroundColor: 'rgba(119, 194, 92, 0.2)',
-                        fill: false,
-                        tension: 0.4
-                    }
-                ]
-            };
-            charts.activityChart = new Chart(activityChartCtx, {
-                type: 'line',
-                data: activityData,
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-            
-            // Gráfico de Barras: Formularios por Sucursal
-            const branchChartCtx = document.getElementById('branch-chart');
-            if (charts.branchChart) {
-                charts.branchChart.destroy();
-            }
-            
-            const branchCounts = forms.reduce((acc, form) => {
-                acc[form.branch] = (acc[form.branch] || 0) + 1;
+        function renderAnalyticsCharts() {
+            // User Forms Distribution
+            const allUsers = [{username: 'Admin'}, ...users];
+            const userFormCounts = allUsers.reduce((acc, { username }) => {
+                const count = forms.filter(f => f.createdBy === username).length;
+                if (count > 0) acc[username] = count;
                 return acc;
             }, {});
-
-            const branchLabels = Object.keys(branchCounts);
-            const branchData = Object.values(branchCounts);
-
-            const branchChartData = {
-                labels: branchLabels,
-                datasets: [{
-                    label: 'Formularios Creados',
-                    data: branchData,
-                    backgroundColor: [
-                        'rgba(0, 35, 56, 0.8)',
-                        'rgba(119, 194, 92, 0.8)',
-                        'rgba(0, 75, 102, 0.8)',
-                        'rgba(163, 212, 122, 0.8)',
-                        'rgba(255, 107, 107, 0.8)'
-                    ],
-                    borderColor: [
-                        primaryBlue,
-                        primaryGreen,
-                        'var(--light-blue)',
-                        'var(--light-green)',
-                        '#ff6b6b'
-                    ],
-                    borderWidth: 1
-                }]
-            };
-
-            charts.branchChart = new Chart(branchChartCtx, {
-                type: 'bar',
-                data: branchChartData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true } }
-                }
-            });
+            if (charts.userFormsChart) charts.userFormsChart.destroy();
+            charts.userFormsChart = new Chart(document.getElementById('user-forms-chart'), { type: 'pie', data: { labels: Object.keys(userFormCounts), datasets: [{ data: Object.values(userFormCounts), backgroundColor: ['#002338', '#77c25c', '#004b66', '#a3d47a', '#ff6b6b', '#667eea', '#f093fb'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+            
+            // Forms Timeline
+            const formsByDay = forms.reduce((acc, { date }) => {
+                const day = new Date(date).toLocaleDateString('es-CL', { month: 'short', day: 'numeric' });
+                acc[day] = (acc[day] || 0) + 1;
+                return acc;
+            }, {});
+            const sortedDays = Object.keys(formsByDay).sort((a,b) => new Date(a) - new Date(b));
+            if (charts.formsTimelineChart) charts.formsTimelineChart.destroy();
+            charts.formsTimelineChart = new Chart(document.getElementById('forms-timeline-chart'), { type: 'line', data: { labels: sortedDays, datasets: [{ label: 'Formularios por Día', data: sortedDays.map(day => formsByDay[day]), borderColor: '#77c25c', backgroundColor: 'rgba(119, 194, 92, 0.2)', fill: true, tension: 0.1 }] }, options: { responsive: true, maintainAspectRatio: false } });
         }
-
-        // Exponer funciones al ámbito global si se necesitan en HTML (ej. onclick)
-        window.deleteUser = deleteUser;
     </script>
 </body>
 </html>
-
