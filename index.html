@@ -689,39 +689,42 @@
             background-color: white;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
+/* Soporte adicional para pantallas pequeñas y grandes */
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 1.4rem;
+  }
 
-            .header-title {
-                font-size: 1.8rem;
-            }
+  .form-input {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
 
-            .nav-menu {
-                justify-content: flex-start;
-            }
+  .nav-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
 
-            main {
-                padding: 1rem;
-            }
+  .chart-wrapper {
+    height: 220px;
+  }
+}
 
-            .dashboard-grid, .analytics-stats, .dashboard-links {
-                grid-template-columns: 1fr;
-            }
+@media (min-width: 1600px) {
+  main {
+    max-width: 1800px;
+    padding: 3rem;
+  }
 
-            .logo {
-                height: 50px;
-            }
+  .chart-wrapper {
+    height: 450px;
+  }
 
-            .chart-wrapper {
-                height: 250px;
-                min-height: 200px;
-            }
-        }
+  .stat-number {
+    font-size: 3.5rem;
+  }
+}
+
 
         /* Utility Classes */
         .hidden { display: none !important; }
@@ -767,7 +770,6 @@
             <div class="login-container">
                 <div class="card login-card">
                     <div class="login-logos">
-                        <img src="https://github.com/AnalistaGn/dashboard-gn-e/blob/main/Grupo%20%5E%20Norte_%20Creamos%20.png?raw=true" alt="Grupo Norte Logo">
                         <img src="https://github.com/AnalistaGn/dashboard-gn-e/blob/main/Norti%CC%81n%20Verde.png?raw=true" alt="Nortin Logo">
                     </div>
                     <div class="login-header">
@@ -1613,6 +1615,15 @@
             if (charts.formsTimelineChart) charts.formsTimelineChart.destroy();
             charts.formsTimelineChart = new Chart(document.getElementById('forms-timeline-chart'), { type: 'line', data: { labels: sortedDays, datasets: [{ label: 'Formularios por Día', data: sortedDays.map(day => formsByDay[day]), borderColor: '#77c25c', backgroundColor: 'rgba(119, 194, 92, 0.2)', fill: true, tension: 0.1 }] }, options: { responsive: true, maintainAspectRatio: false } });
         }
+        
+        function destroyAllCharts() {
+            for (const chartKey in charts) {
+                if (charts[chartKey]) {
+                     charts[chartKey].destroy();
+                     charts[chartKey] = null;
+        }
+    }
+}
     </script>
 </body>
 </html>
